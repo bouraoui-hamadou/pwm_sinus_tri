@@ -1,0 +1,923 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "lcd-routines.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .section .text.delay_ms,"ax",%progbits
+  20              	 .align 2
+  21              	 .global delay_ms
+  22              	 .thumb
+  23              	 .thumb_func
+  25              	delay_ms:
+  26              	.LFB133:
+  27              	 .file 1 "../Libraries/lcd-routines.c"
+   1:../Libraries/lcd-routines.c **** // Ansteuerung eines HD44780 kompatiblen LCD im 4-Bit-Interfacemodus
+   2:../Libraries/lcd-routines.c **** // http://www.mikrocontroller.net/articles/HD44780
+   3:../Libraries/lcd-routines.c **** // http://www.mikrocontroller.net/articles/AVR-GCC-Tutorial/LCD-Ansteuerung
+   4:../Libraries/lcd-routines.c **** //
+   5:../Libraries/lcd-routines.c **** // Die Pinbelegung ist �ber defines in lcd-routines.h einstellbar
+   6:../Libraries/lcd-routines.c **** 
+   7:../Libraries/lcd-routines.c **** #include <XMC4500.h>
+   8:../Libraries/lcd-routines.c **** #include "lcd-routines.h"
+   9:../Libraries/lcd-routines.c **** //#include <util/delay.h>
+  10:../Libraries/lcd-routines.c **** 
+  11:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+  12:../Libraries/lcd-routines.c **** // Erzeugt einen Enable-Puls
+  13:../Libraries/lcd-routines.c **** 
+  14:../Libraries/lcd-routines.c **** void delay_ms(long unsigned int i)
+  15:../Libraries/lcd-routines.c **** {
+  28              	 .loc 1 15 0
+  29              	 .cfi_startproc
+  30              	 
+  31              	 
+  32              	 
+  33 0000 80B4     	 push {r7}
+  34              	.LCFI0:
+  35              	 .cfi_def_cfa_offset 4
+  36              	 .cfi_offset 7,-4
+  37 0002 83B0     	 sub sp,sp,#12
+  38              	.LCFI1:
+  39              	 .cfi_def_cfa_offset 16
+  40 0004 00AF     	 add r7,sp,#0
+  41              	.LCFI2:
+  42              	 .cfi_def_cfa_register 7
+  43 0006 7860     	 str r0,[r7,#4]
+  16:../Libraries/lcd-routines.c **** 	while(i--)
+  44              	 .loc 1 16 0
+  45 0008 00E0     	 b .L2
+  46              	.L3:
+  17:../Libraries/lcd-routines.c **** 	{
+  18:../Libraries/lcd-routines.c **** 		__NOP();
+  47              	 .loc 1 18 0
+  48              	
+  49 000a 00BF     	 nop
+  50              	
+  51              	 .thumb
+  52              	.L2:
+  16:../Libraries/lcd-routines.c **** 	while(i--)
+  53              	 .loc 1 16 0
+  54 000c 7B68     	 ldr r3,[r7,#4]
+  55 000e 5A1E     	 subs r2,r3,#1
+  56 0010 7A60     	 str r2,[r7,#4]
+  57 0012 002B     	 cmp r3,#0
+  58 0014 F9D1     	 bne .L3
+  19:../Libraries/lcd-routines.c **** 	}
+  20:../Libraries/lcd-routines.c **** }
+  59              	 .loc 1 20 0
+  60 0016 0C37     	 adds r7,r7,#12
+  61              	.LCFI3:
+  62              	 .cfi_def_cfa_offset 4
+  63 0018 BD46     	 mov sp,r7
+  64              	.LCFI4:
+  65              	 .cfi_def_cfa_register 13
+  66              	 
+  67 001a 5DF8047B 	 ldr r7,[sp],#4
+  68              	.LCFI5:
+  69              	 .cfi_restore 7
+  70              	 .cfi_def_cfa_offset 0
+  71 001e 7047     	 bx lr
+  72              	 .cfi_endproc
+  73              	.LFE133:
+  75              	 .section .text.lcd_enable,"ax",%progbits
+  76              	 .align 2
+  77              	 .thumb
+  78              	 .thumb_func
+  80              	lcd_enable:
+  81              	.LFB134:
+  21:../Libraries/lcd-routines.c **** 
+  22:../Libraries/lcd-routines.c **** 
+  23:../Libraries/lcd-routines.c **** static void lcd_enable( void )
+  24:../Libraries/lcd-routines.c **** {
+  82              	 .loc 1 24 0
+  83              	 .cfi_startproc
+  84              	 
+  85              	 
+  86 0000 80B5     	 push {r7,lr}
+  87              	.LCFI6:
+  88              	 .cfi_def_cfa_offset 8
+  89              	 .cfi_offset 7,-8
+  90              	 .cfi_offset 14,-4
+  91 0002 00AF     	 add r7,sp,#0
+  92              	.LCFI7:
+  93              	 .cfi_def_cfa_register 7
+  25:../Libraries/lcd-routines.c **** 	PORT2->OUT &= ~(0x00000400);    // Enable auf 0 setzen
+  94              	 .loc 1 25 0
+  95 0004 084A     	 ldr r2,.L5
+  96 0006 084B     	 ldr r3,.L5
+  97 0008 1B68     	 ldr r3,[r3]
+  98 000a 23F48063 	 bic r3,r3,#1024
+  99 000e 1360     	 str r3,[r2]
+  26:../Libraries/lcd-routines.c ****     delay_ms( LCD_ENABLE_US );  // kurze Pause us
+ 100              	 .loc 1 26 0
+ 101 0010 4FF4EE70 	 mov r0,#476
+ 102 0014 FFF7FEFF 	 bl delay_ms
+  27:../Libraries/lcd-routines.c ****     PORT2->OUT |= 0x00000400;     // Enable auf 1 setzen
+ 103              	 .loc 1 27 0
+ 104 0018 034A     	 ldr r2,.L5
+ 105 001a 034B     	 ldr r3,.L5
+ 106 001c 1B68     	 ldr r3,[r3]
+ 107 001e 43F48063 	 orr r3,r3,#1024
+ 108 0022 1360     	 str r3,[r2]
+  28:../Libraries/lcd-routines.c **** }
+ 109              	 .loc 1 28 0
+ 110 0024 80BD     	 pop {r7,pc}
+ 111              	.L6:
+ 112 0026 00BF     	 .align 2
+ 113              	.L5:
+ 114 0028 00820248 	 .word 1208123904
+ 115              	 .cfi_endproc
+ 116              	.LFE134:
+ 118              	 .section .text.buffer_enable,"ax",%progbits
+ 119              	 .align 2
+ 120              	 .thumb
+ 121              	 .thumb_func
+ 123              	buffer_enable:
+ 124              	.LFB135:
+  29:../Libraries/lcd-routines.c **** 
+  30:../Libraries/lcd-routines.c **** static void buffer_enable( void )
+  31:../Libraries/lcd-routines.c **** {
+ 125              	 .loc 1 31 0
+ 126              	 .cfi_startproc
+ 127              	 
+ 128              	 
+ 129 0000 80B5     	 push {r7,lr}
+ 130              	.LCFI8:
+ 131              	 .cfi_def_cfa_offset 8
+ 132              	 .cfi_offset 7,-8
+ 133              	 .cfi_offset 14,-4
+ 134 0002 00AF     	 add r7,sp,#0
+ 135              	.LCFI9:
+ 136              	 .cfi_def_cfa_register 7
+  32:../Libraries/lcd-routines.c **** 	PORT2->OUT |= 0x00000040;
+ 137              	 .loc 1 32 0
+ 138 0004 084A     	 ldr r2,.L8
+ 139 0006 084B     	 ldr r3,.L8
+ 140 0008 1B68     	 ldr r3,[r3]
+ 141 000a 43F04003 	 orr r3,r3,#64
+ 142 000e 1360     	 str r3,[r2]
+  33:../Libraries/lcd-routines.c **** 	delay_ms( LCD_ENABLE_US );  // kurze Pause us
+ 143              	 .loc 1 33 0
+ 144 0010 4FF4EE70 	 mov r0,#476
+ 145 0014 FFF7FEFF 	 bl delay_ms
+  34:../Libraries/lcd-routines.c **** 	PORT2->OUT &= ~(0x00000040);
+ 146              	 .loc 1 34 0
+ 147 0018 034A     	 ldr r2,.L8
+ 148 001a 034B     	 ldr r3,.L8
+ 149 001c 1B68     	 ldr r3,[r3]
+ 150 001e 23F04003 	 bic r3,r3,#64
+ 151 0022 1360     	 str r3,[r2]
+  35:../Libraries/lcd-routines.c **** }
+ 152              	 .loc 1 35 0
+ 153 0024 80BD     	 pop {r7,pc}
+ 154              	.L9:
+ 155 0026 00BF     	 .align 2
+ 156              	.L8:
+ 157 0028 00820248 	 .word 1208123904
+ 158              	 .cfi_endproc
+ 159              	.LFE135:
+ 161              	 .section .text.lcd_out,"ax",%progbits
+ 162              	 .align 2
+ 163              	 .thumb
+ 164              	 .thumb_func
+ 166              	lcd_out:
+ 167              	.LFB136:
+  36:../Libraries/lcd-routines.c **** 
+  37:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+  38:../Libraries/lcd-routines.c **** // Sendet eine 4-bit Ausgabeoperation an das LCD
+  39:../Libraries/lcd-routines.c **** static void lcd_out( uint8_t data )
+  40:../Libraries/lcd-routines.c **** {
+ 168              	 .loc 1 40 0
+ 169              	 .cfi_startproc
+ 170              	 
+ 171              	 
+ 172 0000 80B5     	 push {r7,lr}
+ 173              	.LCFI10:
+ 174              	 .cfi_def_cfa_offset 8
+ 175              	 .cfi_offset 7,-8
+ 176              	 .cfi_offset 14,-4
+ 177 0002 82B0     	 sub sp,sp,#8
+ 178              	.LCFI11:
+ 179              	 .cfi_def_cfa_offset 16
+ 180 0004 00AF     	 add r7,sp,#0
+ 181              	.LCFI12:
+ 182              	 .cfi_def_cfa_register 7
+ 183 0006 0346     	 mov r3,r0
+ 184 0008 FB71     	 strb r3,[r7,#7]
+  41:../Libraries/lcd-routines.c ****     data &= 0xF0;                       // obere 4 Bit maskieren
+ 185              	 .loc 1 41 0
+ 186 000a FB79     	 ldrb r3,[r7,#7]
+ 187 000c 23F00F03 	 bic r3,r3,#15
+ 188 0010 FB71     	 strb r3,[r7,#7]
+  42:../Libraries/lcd-routines.c **** 
+  43:../Libraries/lcd-routines.c ****     LCD_PORT &= ~(0xF0>>(4-LCD_DB));    // Maske l�schen
+ 189              	 .loc 1 43 0
+ 190 0012 094A     	 ldr r2,.L11
+ 191 0014 084B     	 ldr r3,.L11
+ 192 0016 1B68     	 ldr r3,[r3]
+ 193 0018 23F00F03 	 bic r3,r3,#15
+ 194 001c 1360     	 str r3,[r2]
+  44:../Libraries/lcd-routines.c ****     LCD_PORT |= (data>>(4-LCD_DB));     // Bits setzen
+ 195              	 .loc 1 44 0
+ 196 001e 0649     	 ldr r1,.L11
+ 197 0020 054B     	 ldr r3,.L11
+ 198 0022 1B68     	 ldr r3,[r3]
+ 199 0024 FA79     	 ldrb r2,[r7,#7]
+ 200 0026 1209     	 lsrs r2,r2,#4
+ 201 0028 D2B2     	 uxtb r2,r2
+ 202 002a 1343     	 orrs r3,r3,r2
+ 203 002c 0B60     	 str r3,[r1]
+  45:../Libraries/lcd-routines.c ****     lcd_enable();
+ 204              	 .loc 1 45 0
+ 205 002e FFF7FEFF 	 bl lcd_enable
+  46:../Libraries/lcd-routines.c **** }
+ 206              	 .loc 1 46 0
+ 207 0032 0837     	 adds r7,r7,#8
+ 208              	.LCFI13:
+ 209              	 .cfi_def_cfa_offset 8
+ 210 0034 BD46     	 mov sp,r7
+ 211              	.LCFI14:
+ 212              	 .cfi_def_cfa_register 13
+ 213              	 
+ 214 0036 80BD     	 pop {r7,pc}
+ 215              	.L12:
+ 216              	 .align 2
+ 217              	.L11:
+ 218 0038 00830248 	 .word 1208124160
+ 219              	 .cfi_endproc
+ 220              	.LFE136:
+ 222              	 .section .text.lcd_init,"ax",%progbits
+ 223              	 .align 2
+ 224              	 .global lcd_init
+ 225              	 .thumb
+ 226              	 .thumb_func
+ 228              	lcd_init:
+ 229              	.LFB137:
+  47:../Libraries/lcd-routines.c **** 
+  48:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+  49:../Libraries/lcd-routines.c **** // Initialisierung: muss ganz am Anfang des Programms aufgerufen werden.
+  50:../Libraries/lcd-routines.c **** void lcd_init( void )
+  51:../Libraries/lcd-routines.c **** {
+ 230              	 .loc 1 51 0
+ 231              	 .cfi_startproc
+ 232              	 
+ 233              	 
+ 234 0000 80B5     	 push {r7,lr}
+ 235              	.LCFI15:
+ 236              	 .cfi_def_cfa_offset 8
+ 237              	 .cfi_offset 7,-8
+ 238              	 .cfi_offset 14,-4
+ 239 0002 82B0     	 sub sp,sp,#8
+ 240              	.LCFI16:
+ 241              	 .cfi_def_cfa_offset 16
+ 242 0004 00AF     	 add r7,sp,#0
+ 243              	.LCFI17:
+ 244              	 .cfi_def_cfa_register 7
+  52:../Libraries/lcd-routines.c **** 
+  53:../Libraries/lcd-routines.c **** 
+  54:../Libraries/lcd-routines.c **** 
+  55:../Libraries/lcd-routines.c ****     // verwendete Pins auf Ausgang schalten
+  56:../Libraries/lcd-routines.c **** 
+  57:../Libraries/lcd-routines.c **** 	PORT3->IOCR0=0x80808080;
+ 245              	 .loc 1 57 0
+ 246 0006 204B     	 ldr r3,.L14
+ 247 0008 4FF08032 	 mov r2,#-2139062144
+ 248 000c 1A61     	 str r2,[r3,#16]
+  58:../Libraries/lcd-routines.c **** 	PORT3->IOCR4=0x00000080;
+ 249              	 .loc 1 58 0
+ 250 000e 1E4B     	 ldr r3,.L14
+ 251 0010 8022     	 movs r2,#128
+ 252 0012 5A61     	 str r2,[r3,#20]
+  59:../Libraries/lcd-routines.c **** 	PORT2->IOCR8=0x00800000;
+ 253              	 .loc 1 59 0
+ 254 0014 1D4B     	 ldr r3,.L14+4
+ 255 0016 4FF40002 	 mov r2,#8388608
+ 256 001a 9A61     	 str r2,[r3,#24]
+  60:../Libraries/lcd-routines.c **** 	PORT2->IOCR4=0x00800000;
+ 257              	 .loc 1 60 0
+ 258 001c 1B4B     	 ldr r3,.L14+4
+ 259 001e 4FF40002 	 mov r2,#8388608
+ 260 0022 5A61     	 str r2,[r3,#20]
+  61:../Libraries/lcd-routines.c **** 	//PORT1->IOCR12=0x80000000;
+  62:../Libraries/lcd-routines.c **** 
+  63:../Libraries/lcd-routines.c **** 	/*uint32_t pins = (0x0F << LCD_DB) |           // 4 Datenleitungen
+  64:../Libraries/lcd-routines.c ****                    (1<<LCD_RS) |                // R/S Leitung
+  65:../Libraries/lcd-routines.c ****                    (1<<LCD_EN);                 // Enable Leitung
+  66:../Libraries/lcd-routines.c ****     LCD_DDR |= pins;*/
+  67:../Libraries/lcd-routines.c ****  uint32_t pins=0x0000001F;
+ 261              	 .loc 1 67 0
+ 262 0024 1F23     	 movs r3,#31
+ 263 0026 7B60     	 str r3,[r7,#4]
+  68:../Libraries/lcd-routines.c ****     // initial alle Ausg�nge auf Null
+  69:../Libraries/lcd-routines.c ****     LCD_PORT &= ~pins;
+ 264              	 .loc 1 69 0
+ 265 0028 1749     	 ldr r1,.L14
+ 266 002a 174B     	 ldr r3,.L14
+ 267 002c 1A68     	 ldr r2,[r3]
+ 268 002e 7B68     	 ldr r3,[r7,#4]
+ 269 0030 DB43     	 mvns r3,r3
+ 270 0032 1340     	 ands r3,r3,r2
+ 271 0034 0B60     	 str r3,[r1]
+  70:../Libraries/lcd-routines.c ****     //PORT1->OUT|=0x00008000;
+  71:../Libraries/lcd-routines.c ****     // warten auf die Bereitschaft des LCD
+  72:../Libraries/lcd-routines.c ****     delay_ms( LCD_BOOTUP_MS );
+ 272              	 .loc 1 72 0
+ 273 0036 1648     	 ldr r0,.L14+8
+ 274 0038 FFF7FEFF 	 bl delay_ms
+  73:../Libraries/lcd-routines.c **** 
+  74:../Libraries/lcd-routines.c ****     // Soft-Reset muss 3mal hintereinander gesendet werden zur Initialisierung
+  75:../Libraries/lcd-routines.c ****     lcd_out( LCD_SOFT_RESET );
+ 275              	 .loc 1 75 0
+ 276 003c 3020     	 movs r0,#48
+ 277 003e FFF7FEFF 	 bl lcd_out
+  76:../Libraries/lcd-routines.c ****     delay_ms( LCD_SOFT_RESET_MS1 );
+ 278              	 .loc 1 76 0
+ 279 0042 1448     	 ldr r0,.L14+12
+ 280 0044 FFF7FEFF 	 bl delay_ms
+  77:../Libraries/lcd-routines.c **** 
+  78:../Libraries/lcd-routines.c ****     lcd_enable();
+ 281              	 .loc 1 78 0
+ 282 0048 FFF7FEFF 	 bl lcd_enable
+  79:../Libraries/lcd-routines.c ****     delay_ms( LCD_SOFT_RESET_MS2 );
+ 283              	 .loc 1 79 0
+ 284 004c 45F6D810 	 movw r0,#23000
+ 285 0050 FFF7FEFF 	 bl delay_ms
+  80:../Libraries/lcd-routines.c **** 
+  81:../Libraries/lcd-routines.c ****     lcd_enable();
+ 286              	 .loc 1 81 0
+ 287 0054 FFF7FEFF 	 bl lcd_enable
+  82:../Libraries/lcd-routines.c ****     delay_ms( LCD_SOFT_RESET_MS3 );
+ 288              	 .loc 1 82 0
+ 289 0058 45F6D810 	 movw r0,#23000
+ 290 005c FFF7FEFF 	 bl delay_ms
+  83:../Libraries/lcd-routines.c **** 
+  84:../Libraries/lcd-routines.c ****     // 4-bit Modus aktivieren
+  85:../Libraries/lcd-routines.c ****     lcd_out( LCD_SET_FUNCTION |
+ 291              	 .loc 1 85 0
+ 292 0060 2020     	 movs r0,#32
+ 293 0062 FFF7FEFF 	 bl lcd_out
+  86:../Libraries/lcd-routines.c ****              LCD_FUNCTION_4BIT );
+  87:../Libraries/lcd-routines.c ****     delay_ms( LCD_SET_4BITMODE_MS );
+ 294              	 .loc 1 87 0
+ 295 0066 0B48     	 ldr r0,.L14+12
+ 296 0068 FFF7FEFF 	 bl delay_ms
+  88:../Libraries/lcd-routines.c **** 
+  89:../Libraries/lcd-routines.c ****     // 4-bit Modus / 2 Zeilen / 5x7
+  90:../Libraries/lcd-routines.c ****     lcd_command( LCD_SET_FUNCTION |
+ 297              	 .loc 1 90 0
+ 298 006c 2820     	 movs r0,#40
+ 299 006e FFF7FEFF 	 bl lcd_command
+  91:../Libraries/lcd-routines.c ****                  LCD_FUNCTION_4BIT |
+  92:../Libraries/lcd-routines.c ****                  LCD_FUNCTION_2LINE |
+  93:../Libraries/lcd-routines.c ****                  LCD_FUNCTION_5X7 );
+  94:../Libraries/lcd-routines.c **** 
+  95:../Libraries/lcd-routines.c ****     // Display ein / Cursor aus / Blinken aus
+  96:../Libraries/lcd-routines.c ****     lcd_command( LCD_SET_DISPLAY |
+ 300              	 .loc 1 96 0
+ 301 0072 0C20     	 movs r0,#12
+ 302 0074 FFF7FEFF 	 bl lcd_command
+  97:../Libraries/lcd-routines.c ****                  LCD_DISPLAY_ON |
+  98:../Libraries/lcd-routines.c ****                  LCD_CURSOR_OFF |
+  99:../Libraries/lcd-routines.c ****                  LCD_BLINKING_OFF);
+ 100:../Libraries/lcd-routines.c **** 
+ 101:../Libraries/lcd-routines.c ****     // Cursor inkrement / kein Scrollen
+ 102:../Libraries/lcd-routines.c ****     lcd_command( LCD_SET_ENTRY |
+ 303              	 .loc 1 102 0
+ 304 0078 0620     	 movs r0,#6
+ 305 007a FFF7FEFF 	 bl lcd_command
+ 103:../Libraries/lcd-routines.c ****                  LCD_ENTRY_INCREASE |
+ 104:../Libraries/lcd-routines.c ****                  LCD_ENTRY_NOSHIFT );
+ 105:../Libraries/lcd-routines.c **** 
+ 106:../Libraries/lcd-routines.c ****     lcd_clear();
+ 306              	 .loc 1 106 0
+ 307 007e FFF7FEFF 	 bl lcd_clear
+ 107:../Libraries/lcd-routines.c **** }
+ 308              	 .loc 1 107 0
+ 309 0082 0837     	 adds r7,r7,#8
+ 310              	.LCFI18:
+ 311              	 .cfi_def_cfa_offset 8
+ 312 0084 BD46     	 mov sp,r7
+ 313              	.LCFI19:
+ 314              	 .cfi_def_cfa_register 13
+ 315              	 
+ 316 0086 80BD     	 pop {r7,pc}
+ 317              	.L15:
+ 318              	 .align 2
+ 319              	.L14:
+ 320 0088 00830248 	 .word 1208124160
+ 321 008c 00820248 	 .word 1208123904
+ 322 0090 88720500 	 .word 357000
+ 323 0094 38C10100 	 .word 115000
+ 324              	 .cfi_endproc
+ 325              	.LFE137:
+ 327              	 .section .text.lcd_data,"ax",%progbits
+ 328              	 .align 2
+ 329              	 .global lcd_data
+ 330              	 .thumb
+ 331              	 .thumb_func
+ 333              	lcd_data:
+ 334              	.LFB138:
+ 108:../Libraries/lcd-routines.c **** 
+ 109:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 110:../Libraries/lcd-routines.c **** // Sendet ein Datenbyte an das LCD
+ 111:../Libraries/lcd-routines.c **** void lcd_data( uint8_t data )
+ 112:../Libraries/lcd-routines.c **** {
+ 335              	 .loc 1 112 0
+ 336              	 .cfi_startproc
+ 337              	 
+ 338              	 
+ 339 0000 80B5     	 push {r7,lr}
+ 340              	.LCFI20:
+ 341              	 .cfi_def_cfa_offset 8
+ 342              	 .cfi_offset 7,-8
+ 343              	 .cfi_offset 14,-4
+ 344 0002 82B0     	 sub sp,sp,#8
+ 345              	.LCFI21:
+ 346              	 .cfi_def_cfa_offset 16
+ 347 0004 00AF     	 add r7,sp,#0
+ 348              	.LCFI22:
+ 349              	 .cfi_def_cfa_register 7
+ 350 0006 0346     	 mov r3,r0
+ 351 0008 FB71     	 strb r3,[r7,#7]
+ 113:../Libraries/lcd-routines.c ****     LCD_PORT |= (1<<LCD_RS);    // RS auf 1 setzen
+ 352              	 .loc 1 113 0
+ 353 000a 0C4A     	 ldr r2,.L17
+ 354 000c 0B4B     	 ldr r3,.L17
+ 355 000e 1B68     	 ldr r3,[r3]
+ 356 0010 43F01003 	 orr r3,r3,#16
+ 357 0014 1360     	 str r3,[r2]
+ 114:../Libraries/lcd-routines.c ****     buffer_enable();
+ 358              	 .loc 1 114 0
+ 359 0016 FFF7FEFF 	 bl buffer_enable
+ 115:../Libraries/lcd-routines.c ****     lcd_out( data );            // zuerst die oberen,
+ 360              	 .loc 1 115 0
+ 361 001a FB79     	 ldrb r3,[r7,#7]
+ 362 001c 1846     	 mov r0,r3
+ 363 001e FFF7FEFF 	 bl lcd_out
+ 116:../Libraries/lcd-routines.c ****     lcd_out( data<<4 );         // dann die unteren 4 Bit senden
+ 364              	 .loc 1 116 0
+ 365 0022 FB79     	 ldrb r3,[r7,#7]
+ 366 0024 1B01     	 lsls r3,r3,#4
+ 367 0026 DBB2     	 uxtb r3,r3
+ 368 0028 1846     	 mov r0,r3
+ 369 002a FFF7FEFF 	 bl lcd_out
+ 117:../Libraries/lcd-routines.c **** 
+ 118:../Libraries/lcd-routines.c ****     delay_ms( LCD_WRITEDATA_US );//us
+ 370              	 .loc 1 118 0
+ 371 002e 40F24C40 	 movw r0,#1100
+ 372 0032 FFF7FEFF 	 bl delay_ms
+ 119:../Libraries/lcd-routines.c **** }
+ 373              	 .loc 1 119 0
+ 374 0036 0837     	 adds r7,r7,#8
+ 375              	.LCFI23:
+ 376              	 .cfi_def_cfa_offset 8
+ 377 0038 BD46     	 mov sp,r7
+ 378              	.LCFI24:
+ 379              	 .cfi_def_cfa_register 13
+ 380              	 
+ 381 003a 80BD     	 pop {r7,pc}
+ 382              	.L18:
+ 383              	 .align 2
+ 384              	.L17:
+ 385 003c 00830248 	 .word 1208124160
+ 386              	 .cfi_endproc
+ 387              	.LFE138:
+ 389              	 .section .text.lcd_command,"ax",%progbits
+ 390              	 .align 2
+ 391              	 .global lcd_command
+ 392              	 .thumb
+ 393              	 .thumb_func
+ 395              	lcd_command:
+ 396              	.LFB139:
+ 120:../Libraries/lcd-routines.c **** 
+ 121:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 122:../Libraries/lcd-routines.c **** // Sendet einen Befehl an das LCD
+ 123:../Libraries/lcd-routines.c **** void lcd_command( uint8_t data )
+ 124:../Libraries/lcd-routines.c **** {
+ 397              	 .loc 1 124 0
+ 398              	 .cfi_startproc
+ 399              	 
+ 400              	 
+ 401 0000 80B5     	 push {r7,lr}
+ 402              	.LCFI25:
+ 403              	 .cfi_def_cfa_offset 8
+ 404              	 .cfi_offset 7,-8
+ 405              	 .cfi_offset 14,-4
+ 406 0002 82B0     	 sub sp,sp,#8
+ 407              	.LCFI26:
+ 408              	 .cfi_def_cfa_offset 16
+ 409 0004 00AF     	 add r7,sp,#0
+ 410              	.LCFI27:
+ 411              	 .cfi_def_cfa_register 7
+ 412 0006 0346     	 mov r3,r0
+ 413 0008 FB71     	 strb r3,[r7,#7]
+ 125:../Libraries/lcd-routines.c ****     LCD_PORT &= ~(1<<LCD_RS);    // RS auf 0 setzen
+ 414              	 .loc 1 125 0
+ 415 000a 0C4A     	 ldr r2,.L20
+ 416 000c 0B4B     	 ldr r3,.L20
+ 417 000e 1B68     	 ldr r3,[r3]
+ 418 0010 23F01003 	 bic r3,r3,#16
+ 419 0014 1360     	 str r3,[r2]
+ 126:../Libraries/lcd-routines.c ****     buffer_enable();
+ 420              	 .loc 1 126 0
+ 421 0016 FFF7FEFF 	 bl buffer_enable
+ 127:../Libraries/lcd-routines.c ****     lcd_out( data );             // zuerst die oberen,
+ 422              	 .loc 1 127 0
+ 423 001a FB79     	 ldrb r3,[r7,#7]
+ 424 001c 1846     	 mov r0,r3
+ 425 001e FFF7FEFF 	 bl lcd_out
+ 128:../Libraries/lcd-routines.c ****     lcd_out( data<<4 );           // dann die unteren 4 Bit senden
+ 426              	 .loc 1 128 0
+ 427 0022 FB79     	 ldrb r3,[r7,#7]
+ 428 0024 1B01     	 lsls r3,r3,#4
+ 429 0026 DBB2     	 uxtb r3,r3
+ 430 0028 1846     	 mov r0,r3
+ 431 002a FFF7FEFF 	 bl lcd_out
+ 129:../Libraries/lcd-routines.c **** 
+ 130:../Libraries/lcd-routines.c ****     delay_ms( LCD_COMMAND_US ); //us
+ 432              	 .loc 1 130 0
+ 433 002e 4FF47A70 	 mov r0,#1000
+ 434 0032 FFF7FEFF 	 bl delay_ms
+ 131:../Libraries/lcd-routines.c **** }
+ 435              	 .loc 1 131 0
+ 436 0036 0837     	 adds r7,r7,#8
+ 437              	.LCFI28:
+ 438              	 .cfi_def_cfa_offset 8
+ 439 0038 BD46     	 mov sp,r7
+ 440              	.LCFI29:
+ 441              	 .cfi_def_cfa_register 13
+ 442              	 
+ 443 003a 80BD     	 pop {r7,pc}
+ 444              	.L21:
+ 445              	 .align 2
+ 446              	.L20:
+ 447 003c 00830248 	 .word 1208124160
+ 448              	 .cfi_endproc
+ 449              	.LFE139:
+ 451              	 .section .text.lcd_clear,"ax",%progbits
+ 452              	 .align 2
+ 453              	 .global lcd_clear
+ 454              	 .thumb
+ 455              	 .thumb_func
+ 457              	lcd_clear:
+ 458              	.LFB140:
+ 132:../Libraries/lcd-routines.c **** 
+ 133:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 134:../Libraries/lcd-routines.c **** // Sendet den Befehl zur L�schung des Displays
+ 135:../Libraries/lcd-routines.c **** void lcd_clear( void )
+ 136:../Libraries/lcd-routines.c **** {
+ 459              	 .loc 1 136 0
+ 460              	 .cfi_startproc
+ 461              	 
+ 462              	 
+ 463 0000 80B5     	 push {r7,lr}
+ 464              	.LCFI30:
+ 465              	 .cfi_def_cfa_offset 8
+ 466              	 .cfi_offset 7,-8
+ 467              	 .cfi_offset 14,-4
+ 468 0002 00AF     	 add r7,sp,#0
+ 469              	.LCFI31:
+ 470              	 .cfi_def_cfa_register 7
+ 137:../Libraries/lcd-routines.c ****     lcd_command( LCD_CLEAR_DISPLAY );
+ 471              	 .loc 1 137 0
+ 472 0004 0120     	 movs r0,#1
+ 473 0006 FFF7FEFF 	 bl lcd_command
+ 138:../Libraries/lcd-routines.c ****     delay_ms( LCD_CLEAR_DISPLAY_MS );
+ 474              	 .loc 1 138 0
+ 475 000a 4BF2B030 	 movw r0,#46000
+ 476 000e FFF7FEFF 	 bl delay_ms
+ 139:../Libraries/lcd-routines.c **** }
+ 477              	 .loc 1 139 0
+ 478 0012 80BD     	 pop {r7,pc}
+ 479              	 .cfi_endproc
+ 480              	.LFE140:
+ 482              	 .section .text.lcd_home,"ax",%progbits
+ 483              	 .align 2
+ 484              	 .global lcd_home
+ 485              	 .thumb
+ 486              	 .thumb_func
+ 488              	lcd_home:
+ 489              	.LFB141:
+ 140:../Libraries/lcd-routines.c **** 
+ 141:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 142:../Libraries/lcd-routines.c **** // Sendet den Befehl: Cursor Home
+ 143:../Libraries/lcd-routines.c **** void lcd_home( void )
+ 144:../Libraries/lcd-routines.c **** {
+ 490              	 .loc 1 144 0
+ 491              	 .cfi_startproc
+ 492              	 
+ 493              	 
+ 494 0000 80B5     	 push {r7,lr}
+ 495              	.LCFI32:
+ 496              	 .cfi_def_cfa_offset 8
+ 497              	 .cfi_offset 7,-8
+ 498              	 .cfi_offset 14,-4
+ 499 0002 00AF     	 add r7,sp,#0
+ 500              	.LCFI33:
+ 501              	 .cfi_def_cfa_register 7
+ 145:../Libraries/lcd-routines.c ****     lcd_command( LCD_CURSOR_HOME );
+ 502              	 .loc 1 145 0
+ 503 0004 0220     	 movs r0,#2
+ 504 0006 FFF7FEFF 	 bl lcd_command
+ 146:../Libraries/lcd-routines.c ****     delay_ms( LCD_CURSOR_HOME_MS );
+ 505              	 .loc 1 146 0
+ 506 000a 4BF2B030 	 movw r0,#46000
+ 507 000e FFF7FEFF 	 bl delay_ms
+ 147:../Libraries/lcd-routines.c **** }
+ 508              	 .loc 1 147 0
+ 509 0012 80BD     	 pop {r7,pc}
+ 510              	 .cfi_endproc
+ 511              	.LFE141:
+ 513              	 .section .text.lcd_setcursor,"ax",%progbits
+ 514              	 .align 2
+ 515              	 .global lcd_setcursor
+ 516              	 .thumb
+ 517              	 .thumb_func
+ 519              	lcd_setcursor:
+ 520              	.LFB142:
+ 148:../Libraries/lcd-routines.c **** 
+ 149:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 150:../Libraries/lcd-routines.c **** // Setzt den Cursor in Spalte x (0..15) Zeile y (1..4)
+ 151:../Libraries/lcd-routines.c **** 
+ 152:../Libraries/lcd-routines.c **** void lcd_setcursor( uint8_t x, uint8_t y )
+ 153:../Libraries/lcd-routines.c **** {
+ 521              	 .loc 1 153 0
+ 522              	 .cfi_startproc
+ 523              	 
+ 524              	 
+ 525 0000 80B5     	 push {r7,lr}
+ 526              	.LCFI34:
+ 527              	 .cfi_def_cfa_offset 8
+ 528              	 .cfi_offset 7,-8
+ 529              	 .cfi_offset 14,-4
+ 530 0002 84B0     	 sub sp,sp,#16
+ 531              	.LCFI35:
+ 532              	 .cfi_def_cfa_offset 24
+ 533 0004 00AF     	 add r7,sp,#0
+ 534              	.LCFI36:
+ 535              	 .cfi_def_cfa_register 7
+ 536 0006 0346     	 mov r3,r0
+ 537 0008 0A46     	 mov r2,r1
+ 538 000a FB71     	 strb r3,[r7,#7]
+ 539 000c 1346     	 mov r3,r2
+ 540 000e BB71     	 strb r3,[r7,#6]
+ 154:../Libraries/lcd-routines.c ****     uint8_t data;
+ 155:../Libraries/lcd-routines.c **** 
+ 156:../Libraries/lcd-routines.c ****     switch (y)
+ 541              	 .loc 1 156 0
+ 542 0010 BB79     	 ldrb r3,[r7,#6]
+ 543 0012 012B     	 cmp r3,#1
+ 544 0014 02D0     	 beq .L26
+ 545 0016 022B     	 cmp r3,#2
+ 546 0018 04D0     	 beq .L27
+ 157:../Libraries/lcd-routines.c ****     {
+ 158:../Libraries/lcd-routines.c ****         case 1:    // 1. Zeile
+ 159:../Libraries/lcd-routines.c ****             data = LCD_SET_DDADR + LCD_DDADR_LINE1 + x;
+ 160:../Libraries/lcd-routines.c ****             break;
+ 161:../Libraries/lcd-routines.c **** 
+ 162:../Libraries/lcd-routines.c ****         case 2:    // 2. Zeile
+ 163:../Libraries/lcd-routines.c ****             data = LCD_SET_DDADR + LCD_DDADR_LINE2 + x;
+ 164:../Libraries/lcd-routines.c ****             break;
+ 165:../Libraries/lcd-routines.c **** 
+ 166:../Libraries/lcd-routines.c ****         default:
+ 167:../Libraries/lcd-routines.c ****             return;                                   // f�r den Fall einer falschen Zeile
+ 547              	 .loc 1 167 0
+ 548 001a 0BE0     	 b .L24
+ 549              	.L26:
+ 159:../Libraries/lcd-routines.c ****             break;
+ 550              	 .loc 1 159 0
+ 551 001c FB79     	 ldrb r3,[r7,#7]
+ 552 001e 803B     	 subs r3,r3,#128
+ 553 0020 FB73     	 strb r3,[r7,#15]
+ 160:../Libraries/lcd-routines.c **** 
+ 554              	 .loc 1 160 0
+ 555 0022 03E0     	 b .L28
+ 556              	.L27:
+ 163:../Libraries/lcd-routines.c ****             break;
+ 557              	 .loc 1 163 0
+ 558 0024 FB79     	 ldrb r3,[r7,#7]
+ 559 0026 403B     	 subs r3,r3,#64
+ 560 0028 FB73     	 strb r3,[r7,#15]
+ 164:../Libraries/lcd-routines.c **** 
+ 561              	 .loc 1 164 0
+ 562 002a 00BF     	 nop
+ 563              	.L28:
+ 168:../Libraries/lcd-routines.c ****     }
+ 169:../Libraries/lcd-routines.c **** 
+ 170:../Libraries/lcd-routines.c ****     lcd_command( data );
+ 564              	 .loc 1 170 0
+ 565 002c FB7B     	 ldrb r3,[r7,#15]
+ 566 002e 1846     	 mov r0,r3
+ 567 0030 FFF7FEFF 	 bl lcd_command
+ 568              	.L24:
+ 171:../Libraries/lcd-routines.c **** }
+ 569              	 .loc 1 171 0
+ 570 0034 1037     	 adds r7,r7,#16
+ 571              	.LCFI37:
+ 572              	 .cfi_def_cfa_offset 8
+ 573 0036 BD46     	 mov sp,r7
+ 574              	.LCFI38:
+ 575              	 .cfi_def_cfa_register 13
+ 576              	 
+ 577 0038 80BD     	 pop {r7,pc}
+ 578              	 .cfi_endproc
+ 579              	.LFE142:
+ 581 003a 00BF     	 .section .text.lcd_string,"ax",%progbits
+ 582              	 .align 2
+ 583              	 .global lcd_string
+ 584              	 .thumb
+ 585              	 .thumb_func
+ 587              	lcd_string:
+ 588              	.LFB143:
+ 172:../Libraries/lcd-routines.c **** 
+ 173:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 174:../Libraries/lcd-routines.c **** // Schreibt einen String auf das LCD
+ 175:../Libraries/lcd-routines.c **** 
+ 176:../Libraries/lcd-routines.c **** void lcd_string( const char *data )
+ 177:../Libraries/lcd-routines.c **** {
+ 589              	 .loc 1 177 0
+ 590              	 .cfi_startproc
+ 591              	 
+ 592              	 
+ 593 0000 80B5     	 push {r7,lr}
+ 594              	.LCFI39:
+ 595              	 .cfi_def_cfa_offset 8
+ 596              	 .cfi_offset 7,-8
+ 597              	 .cfi_offset 14,-4
+ 598 0002 82B0     	 sub sp,sp,#8
+ 599              	.LCFI40:
+ 600              	 .cfi_def_cfa_offset 16
+ 601 0004 00AF     	 add r7,sp,#0
+ 602              	.LCFI41:
+ 603              	 .cfi_def_cfa_register 7
+ 604 0006 7860     	 str r0,[r7,#4]
+ 178:../Libraries/lcd-routines.c ****     while( *data != '\0' )
+ 605              	 .loc 1 178 0
+ 606 0008 06E0     	 b .L31
+ 607              	.L32:
+ 179:../Libraries/lcd-routines.c ****         lcd_data( *data++ );
+ 608              	 .loc 1 179 0
+ 609 000a 7B68     	 ldr r3,[r7,#4]
+ 610 000c 5A1C     	 adds r2,r3,#1
+ 611 000e 7A60     	 str r2,[r7,#4]
+ 612 0010 1B78     	 ldrb r3,[r3]
+ 613 0012 1846     	 mov r0,r3
+ 614 0014 FFF7FEFF 	 bl lcd_data
+ 615              	.L31:
+ 178:../Libraries/lcd-routines.c ****     while( *data != '\0' )
+ 616              	 .loc 1 178 0
+ 617 0018 7B68     	 ldr r3,[r7,#4]
+ 618 001a 1B78     	 ldrb r3,[r3]
+ 619 001c 002B     	 cmp r3,#0
+ 620 001e F4D1     	 bne .L32
+ 180:../Libraries/lcd-routines.c **** }
+ 621              	 .loc 1 180 0
+ 622 0020 0837     	 adds r7,r7,#8
+ 623              	.LCFI42:
+ 624              	 .cfi_def_cfa_offset 8
+ 625 0022 BD46     	 mov sp,r7
+ 626              	.LCFI43:
+ 627              	 .cfi_def_cfa_register 13
+ 628              	 
+ 629 0024 80BD     	 pop {r7,pc}
+ 630              	 .cfi_endproc
+ 631              	.LFE143:
+ 633 0026 00BF     	 .section .text.lcd_generatechar,"ax",%progbits
+ 634              	 .align 2
+ 635              	 .global lcd_generatechar
+ 636              	 .thumb
+ 637              	 .thumb_func
+ 639              	lcd_generatechar:
+ 640              	.LFB144:
+ 181:../Libraries/lcd-routines.c **** 
+ 182:../Libraries/lcd-routines.c **** ////////////////////////////////////////////////////////////////////////////////
+ 183:../Libraries/lcd-routines.c **** // Schreibt ein Zeichen in den Character Generator RAM
+ 184:../Libraries/lcd-routines.c **** 
+ 185:../Libraries/lcd-routines.c **** void lcd_generatechar( uint8_t code, const uint8_t *data )
+ 186:../Libraries/lcd-routines.c **** {
+ 641              	 .loc 1 186 0
+ 642              	 .cfi_startproc
+ 643              	 
+ 644              	 
+ 645 0000 80B5     	 push {r7,lr}
+ 646              	.LCFI44:
+ 647              	 .cfi_def_cfa_offset 8
+ 648              	 .cfi_offset 7,-8
+ 649              	 .cfi_offset 14,-4
+ 650 0002 84B0     	 sub sp,sp,#16
+ 651              	.LCFI45:
+ 652              	 .cfi_def_cfa_offset 24
+ 653 0004 00AF     	 add r7,sp,#0
+ 654              	.LCFI46:
+ 655              	 .cfi_def_cfa_register 7
+ 656 0006 0346     	 mov r3,r0
+ 657 0008 3960     	 str r1,[r7]
+ 658 000a FB71     	 strb r3,[r7,#7]
+ 187:../Libraries/lcd-routines.c ****     // Startposition des Zeichens einstellen
+ 188:../Libraries/lcd-routines.c ****     lcd_command( LCD_SET_CGADR | (code<<3) );
+ 659              	 .loc 1 188 0
+ 660 000c FB79     	 ldrb r3,[r7,#7]
+ 661 000e DB00     	 lsls r3,r3,#3
+ 662 0010 DBB2     	 uxtb r3,r3
+ 663 0012 43F04003 	 orr r3,r3,#64
+ 664 0016 DBB2     	 uxtb r3,r3
+ 665 0018 DBB2     	 uxtb r3,r3
+ 666 001a 1846     	 mov r0,r3
+ 667 001c FFF7FEFF 	 bl lcd_command
+ 668              	.LBB2:
+ 189:../Libraries/lcd-routines.c **** 
+ 190:../Libraries/lcd-routines.c ****     // Bitmuster �bertragen
+ 191:../Libraries/lcd-routines.c ****     for ( uint8_t i=0; i<8; i++ )
+ 669              	 .loc 1 191 0
+ 670 0020 0023     	 movs r3,#0
+ 671 0022 FB73     	 strb r3,[r7,#15]
+ 672 0024 09E0     	 b .L34
+ 673              	.L35:
+ 192:../Libraries/lcd-routines.c ****     {
+ 193:../Libraries/lcd-routines.c ****         lcd_data( data[i] );
+ 674              	 .loc 1 193 0 discriminator 3
+ 675 0026 FB7B     	 ldrb r3,[r7,#15]
+ 676 0028 3A68     	 ldr r2,[r7]
+ 677 002a 1344     	 add r3,r3,r2
+ 678 002c 1B78     	 ldrb r3,[r3]
+ 679 002e 1846     	 mov r0,r3
+ 680 0030 FFF7FEFF 	 bl lcd_data
+ 191:../Libraries/lcd-routines.c ****     {
+ 681              	 .loc 1 191 0 discriminator 3
+ 682 0034 FB7B     	 ldrb r3,[r7,#15]
+ 683 0036 0133     	 adds r3,r3,#1
+ 684 0038 FB73     	 strb r3,[r7,#15]
+ 685              	.L34:
+ 191:../Libraries/lcd-routines.c ****     {
+ 686              	 .loc 1 191 0 is_stmt 0 discriminator 1
+ 687 003a FB7B     	 ldrb r3,[r7,#15]
+ 688 003c 072B     	 cmp r3,#7
+ 689 003e F2D9     	 bls .L35
+ 690              	.LBE2:
+ 194:../Libraries/lcd-routines.c ****     }
+ 195:../Libraries/lcd-routines.c **** }
+ 691              	 .loc 1 195 0 is_stmt 1
+ 692 0040 1037     	 adds r7,r7,#16
+ 693              	.LCFI47:
+ 694              	 .cfi_def_cfa_offset 8
+ 695 0042 BD46     	 mov sp,r7
+ 696              	.LCFI48:
+ 697              	 .cfi_def_cfa_register 13
+ 698              	 
+ 699 0044 80BD     	 pop {r7,pc}
+ 700              	 .cfi_endproc
+ 701              	.LFE144:
+ 703 0046 00BF     	 .text
+ 704              	.Letext0:
+ 705              	 .file 2 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 706              	 .file 3 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 707              	 .file 4 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+ 708              	 .file 5 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 709              	 .file 6 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/core_cm4.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lcd-routines.c
+    {standard input}:20     .text.delay_ms:00000000 $t
+    {standard input}:25     .text.delay_ms:00000000 delay_ms
+    {standard input}:76     .text.lcd_enable:00000000 $t
+    {standard input}:80     .text.lcd_enable:00000000 lcd_enable
+    {standard input}:114    .text.lcd_enable:00000028 $d
+    {standard input}:119    .text.buffer_enable:00000000 $t
+    {standard input}:123    .text.buffer_enable:00000000 buffer_enable
+    {standard input}:157    .text.buffer_enable:00000028 $d
+    {standard input}:162    .text.lcd_out:00000000 $t
+    {standard input}:166    .text.lcd_out:00000000 lcd_out
+    {standard input}:218    .text.lcd_out:00000038 $d
+    {standard input}:223    .text.lcd_init:00000000 $t
+    {standard input}:228    .text.lcd_init:00000000 lcd_init
+    {standard input}:395    .text.lcd_command:00000000 lcd_command
+    {standard input}:457    .text.lcd_clear:00000000 lcd_clear
+    {standard input}:320    .text.lcd_init:00000088 $d
+    {standard input}:328    .text.lcd_data:00000000 $t
+    {standard input}:333    .text.lcd_data:00000000 lcd_data
+    {standard input}:385    .text.lcd_data:0000003c $d
+    {standard input}:390    .text.lcd_command:00000000 $t
+    {standard input}:447    .text.lcd_command:0000003c $d
+    {standard input}:452    .text.lcd_clear:00000000 $t
+    {standard input}:483    .text.lcd_home:00000000 $t
+    {standard input}:488    .text.lcd_home:00000000 lcd_home
+    {standard input}:514    .text.lcd_setcursor:00000000 $t
+    {standard input}:519    .text.lcd_setcursor:00000000 lcd_setcursor
+    {standard input}:582    .text.lcd_string:00000000 $t
+    {standard input}:587    .text.lcd_string:00000000 lcd_string
+    {standard input}:634    .text.lcd_generatechar:00000000 $t
+    {standard input}:639    .text.lcd_generatechar:00000000 lcd_generatechar
+                     .debug_frame:00000010 $d
+
+NO UNDEFINED SYMBOLS

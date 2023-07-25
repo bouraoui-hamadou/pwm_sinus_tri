@@ -1,0 +1,124 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "adc_measurement_conf.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .global global_iclass_config
+  20              	 .section .rodata.global_iclass_config,"a",%progbits
+  21              	 .align 2
+  24              	global_iclass_config:
+  25 0000 00       	 .byte 0
+  26 0001 01       	 .byte 1
+  27 0002 0000     	 .space 2
+  28              	 .global Channel_A_ch_config
+  29              	 .section .data.Channel_A_ch_config,"aw",%progbits
+  30              	 .align 2
+  33              	Channel_A_ch_config:
+  34 0000 02       	 .byte 2
+  35 0001 00       	 .byte 0
+  36 0002 2F       	 .byte 47
+  37 0003 00       	 .byte 0
+  38 0004 00000000 	 .word 0
+  39 0008 00       	 .byte 0
+  40 0009 01       	 .byte 1
+  41 000a 0000     	 .space 2
+  42              	 .global Channel_A_res_config
+  43              	 .section .bss.Channel_A_res_config,"aw",%nobits
+  44              	 .align 2
+  47              	Channel_A_res_config:
+  48 0000 00000000 	 .space 4
+  49              	 .global ADC_MEASUREMENT_Channel_A_handle
+  50              	 .section .data.ADC_MEASUREMENT_Channel_A_handle,"aw",%progbits
+  51              	 .align 2
+  54              	ADC_MEASUREMENT_Channel_A_handle:
+  55 0000 00000000 	 .word Channel_A_ch_config
+  56 0004 00000000 	 .word Channel_A_res_config
+  57 0008 00440040 	 .word 1073759232
+  58 000c 00       	 .byte 0
+  59 000d 00       	 .byte 0
+  60 000e 0000     	 .space 2
+  61              	 .global ADC_MEASUREMENT_channel_array
+  62              	 .section .data.ADC_MEASUREMENT_channel_array,"aw",%progbits
+  63              	 .align 2
+  66              	ADC_MEASUREMENT_channel_array:
+  67 0000 00000000 	 .word ADC_MEASUREMENT_Channel_A_handle
+  68              	 .global backgnd_rs_intr_handle
+  69              	 .section .rodata.backgnd_rs_intr_handle,"a",%progbits
+  70              	 .align 2
+  73              	backgnd_rs_intr_handle:
+  74 0000 10000000 	 .word 16
+  75 0004 3E000000 	 .word 62
+  76 0008 00000000 	 .word 0
+  77              	 .global backgnd_config
+  78              	 .section .rodata.backgnd_config,"a",%progbits
+  79              	 .align 2
+  82              	backgnd_config:
+  83 0000 05       	 .byte 5
+  84 0001 000000   	 .space 3
+  85 0004 00       	 .space 1
+  86 0005 45       	 .byte 69
+  87 0006 00       	 .byte 0
+  88 0007 00       	 .byte 0
+  89 0008 0C       	 .byte 12
+  90 0009 000000   	 .space 3
+  91              	 .global ADC_MEASUREMENT_0
+  92              	 .section .data.ADC_MEASUREMENT_0,"aw",%progbits
+  93              	 .align 2
+  96              	ADC_MEASUREMENT_0:
+  97 0000 00000000 	 .word ADC_MEASUREMENT_channel_array
+  98 0004 00000000 	 .word backgnd_config
+  99 0008 00000000 	 .word global_iclass_config
+ 100 000c 00000000 	 .word GLOBAL_ADC_0
+ 101 0010 00000000 	 .word backgnd_rs_intr_handle
+ 102 0014 00000000 	 .word 0
+ 103 0018 02       	 .byte 2
+ 104 0019 06       	 .byte 6
+ 105 001a 00       	 .byte 0
+ 106 001b 00       	 .space 1
+ 107              	 .text
+ 108              	.Letext0:
+ 109              	 .file 1 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 110              	 .file 2 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 111              	 .file 3 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+ 112              	 .file 4 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_vadc.h"
+ 113              	 .file 5 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_ADC/global_adc.h"
+ 114              	 .file 6 "../Dave/Generated/ADC_MEASUREMENT/adc_measurement.h"
+ 115              	 .file 7 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 116              	 .file 8 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/core_cm4.h"
+ 117              	 .file 9 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
+ 118              	 .file 10 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_ADC/global_adc_extern.h"
+ 119              	 .file 11 "../Dave/Generated/ADC_MEASUREMENT/adc_measurement_conf.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 adc_measurement_conf.c
+    {standard input}:24     .rodata.global_iclass_config:00000000 global_iclass_config
+    {standard input}:21     .rodata.global_iclass_config:00000000 $d
+    {standard input}:33     .data.Channel_A_ch_config:00000000 Channel_A_ch_config
+    {standard input}:30     .data.Channel_A_ch_config:00000000 $d
+    {standard input}:47     .bss.Channel_A_res_config:00000000 Channel_A_res_config
+    {standard input}:44     .bss.Channel_A_res_config:00000000 $d
+    {standard input}:54     .data.ADC_MEASUREMENT_Channel_A_handle:00000000 ADC_MEASUREMENT_Channel_A_handle
+    {standard input}:51     .data.ADC_MEASUREMENT_Channel_A_handle:00000000 $d
+    {standard input}:66     .data.ADC_MEASUREMENT_channel_array:00000000 ADC_MEASUREMENT_channel_array
+    {standard input}:63     .data.ADC_MEASUREMENT_channel_array:00000000 $d
+    {standard input}:73     .rodata.backgnd_rs_intr_handle:00000000 backgnd_rs_intr_handle
+    {standard input}:70     .rodata.backgnd_rs_intr_handle:00000000 $d
+    {standard input}:82     .rodata.backgnd_config:00000000 backgnd_config
+    {standard input}:79     .rodata.backgnd_config:00000000 $d
+    {standard input}:96     .data.ADC_MEASUREMENT_0:00000000 ADC_MEASUREMENT_0
+    {standard input}:93     .data.ADC_MEASUREMENT_0:00000000 $d
+
+UNDEFINED SYMBOLS
+GLOBAL_ADC_0

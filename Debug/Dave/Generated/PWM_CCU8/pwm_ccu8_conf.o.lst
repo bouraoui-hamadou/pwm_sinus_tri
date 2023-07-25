@@ -1,0 +1,594 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "pwm_ccu8_conf.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .global PWM_CCU8_0_timer_handle
+  20              	 .section .rodata.PWM_CCU8_0_timer_handle,"a",%progbits
+  21              	 .align 2
+  24              	PWM_CCU8_0_timer_handle:
+  25 0000 01       	 .byte 1
+  26 0001 00       	 .byte 0
+  27 0002 00       	 .byte 0
+  28 0003 00       	 .byte 0
+  29 0004 00       	 .byte 0
+  30 0005 000000   	 .space 3
+  31 0008 14       	 .byte 20
+  32 0009 000000   	 .space 3
+  33 000c 00       	 .byte 0
+  34 000d 00       	 .byte 0
+  35 000e 0000     	 .space 2
+  36              	 .global PWM_CCU8_0_event0_config
+  37              	 .section .rodata.PWM_CCU8_0_event0_config,"a",%progbits
+  38              	 .align 2
+  41              	PWM_CCU8_0_event0_config:
+  42 0000 00       	 .byte 0
+  43 0001 00       	 .byte 0
+  44 0002 01       	 .byte 1
+  45 0003 00       	 .byte 0
+  46              	 .global PWM_CCU8_0_event1_config
+  47              	 .section .rodata.PWM_CCU8_0_event1_config,"a",%progbits
+  48              	 .align 2
+  51              	PWM_CCU8_0_event1_config:
+  52 0000 00       	 .byte 0
+  53 0001 00       	 .byte 0
+  54 0002 01       	 .byte 1
+  55 0003 00       	 .byte 0
+  56              	 .global PWM_CCU8_0_event2_config
+  57              	 .section .rodata.PWM_CCU8_0_event2_config,"a",%progbits
+  58              	 .align 2
+  61              	PWM_CCU8_0_event2_config:
+  62 0000 00       	 .byte 0
+  63 0001 00       	 .byte 0
+  64 0002 01       	 .byte 1
+  65 0003 00       	 .byte 0
+  66              	 .global PWM_CCU8_0_dt_config
+  67              	 .section .rodata.PWM_CCU8_0_dt_config,"a",%progbits
+  68              	 .align 2
+  71              	PWM_CCU8_0_dt_config:
+  72 0000 4D       	 .byte 77
+  73 0001 000000   	 .space 3
+  74 0004 B4       	 .byte -76
+  75 0005 B4       	 .byte -76
+  76 0006 0000     	 .space 2
+  77 0008 00       	 .byte 0
+  78 0009 00       	 .byte 0
+  79 000a 0000     	 .space 2
+  80              	 .global PWM_CCU8_0_ch1_out0_config
+  81              	 .section .rodata.PWM_CCU8_0_ch1_out0_config,"a",%progbits
+  82              	 .align 2
+  85              	PWM_CCU8_0_ch1_out0_config:
+  86 0000 98       	 .byte -104
+  87 0001 000000   	 .space 3
+  88 0004 00000100 	 .word 65536
+  89 0008 00       	 .byte 0
+  90 0009 000000   	 .space 3
+  91              	 .global PWM_CCU8_0_ch1_out1_config
+  92              	 .section .rodata.PWM_CCU8_0_ch1_out1_config,"a",%progbits
+  93              	 .align 2
+  96              	PWM_CCU8_0_ch1_out1_config:
+  97 0000 98       	 .byte -104
+  98 0001 000000   	 .space 3
+  99 0004 00000100 	 .word 65536
+ 100 0008 00       	 .byte 0
+ 101 0009 000000   	 .space 3
+ 102              	 .global PWM_CCU8_0_config_handle
+ 103              	 .section .rodata.PWM_CCU8_0_config_handle,"a",%progbits
+ 104              	 .align 2
+ 107              	PWM_CCU8_0_config_handle:
+ 108 0000 00       	 .byte 0
+ 109 0001 00       	 .space 1
+ 110 0002 5FEA     	 .short -5537
+ 111 0004 3075     	 .short 30000
+ 112 0006 1475     	 .short 29972
+ 113 0008 00       	 .byte 0
+ 114 0009 00       	 .byte 0
+ 115 000a 00       	 .byte 0
+ 116 000b 00       	 .byte 0
+ 117 000c 00       	 .byte 0
+ 118 000d 00       	 .byte 0
+ 119 000e 00       	 .byte 0
+ 120 000f 00       	 .byte 0
+ 121 0010 00       	 .byte 0
+ 122 0011 00       	 .byte 0
+ 123 0012 00       	 .byte 0
+ 124 0013 00       	 .byte 0
+ 125 0014 00       	 .byte 0
+ 126 0015 00       	 .byte 0
+ 127 0016 00       	 .byte 0
+ 128 0017 00       	 .byte 0
+ 129 0018 00       	 .byte 0
+ 130 0019 00       	 .byte 0
+ 131 001a 0000     	 .space 2
+ 132 001c 00000000 	 .word PWM_CCU8_0_event0_config
+ 133 0020 00000000 	 .word PWM_CCU8_0_event1_config
+ 134 0024 00000000 	 .word PWM_CCU8_0_event2_config
+ 135 0028 00       	 .byte 0
+ 136 0029 00       	 .byte 0
+ 137 002a 00       	 .byte 0
+ 138 002b 00       	 .byte 0
+ 139 002c 00       	 .byte 0
+ 140 002d 00       	 .byte 0
+ 141 002e 00       	 .byte 0
+ 142 002f 00       	 .byte 0
+ 143 0030 00       	 .byte 0
+ 144 0031 00       	 .byte 0
+ 145 0032 00       	 .byte 0
+ 146 0033 00       	 .byte 0
+ 147 0034 00       	 .byte 0
+ 148 0035 00       	 .byte 0
+ 149 0036 00       	 .byte 0
+ 150 0037 00       	 .byte 0
+ 151 0038 01       	 .byte 1
+ 152 0039 00       	 .byte 0
+ 153 003a 0000     	 .space 2
+ 154 003c 00000004 	 .word 67108864
+ 155 0040 00000000 	 .word PWM_CCU8_0_dt_config
+ 156 0044 00000000 	 .word PWM_CCU8_0_timer_handle
+ 157 0048 01       	 .byte 1
+ 158 0049 000000   	 .space 3
+ 159 004c 00800248 	 .word 1208123392
+ 160 0050 05       	 .byte 5
+ 161 0051 000000   	 .space 3
+ 162 0054 00000000 	 .word PWM_CCU8_0_ch1_out0_config
+ 163 0058 01       	 .byte 1
+ 164 0059 000000   	 .space 3
+ 165 005c 00800248 	 .word 1208123392
+ 166 0060 02       	 .byte 2
+ 167 0061 000000   	 .space 3
+ 168 0064 00000000 	 .word PWM_CCU8_0_ch1_out1_config
+ 169 0068 00       	 .byte 0
+ 170 0069 000000   	 .space 3
+ 171 006c 00000000 	 .word 0
+ 172 0070 00       	 .byte 0
+ 173 0071 000000   	 .space 3
+ 174 0074 00000000 	 .word 0
+ 175 0078 00       	 .byte 0
+ 176 0079 000000   	 .space 3
+ 177 007c 00000000 	 .word 0
+ 178 0080 00       	 .byte 0
+ 179 0081 000000   	 .space 3
+ 180 0084 00000000 	 .word 0
+ 181 0088 00000000 	 .word GLOBAL_CCU8_0
+ 182              	 .global PWM_CCU8_0
+ 183              	 .section .data.PWM_CCU8_0,"aw",%progbits
+ 184              	 .align 2
+ 187              	PWM_CCU8_0:
+ 188 0000 00000000 	 .word PWM_CCU8_0_config_handle
+ 189 0004 00000240 	 .word 1073872896
+ 190 0008 00010240 	 .word 1073873152
+ 191 000c 00       	 .byte 0
+ 192 000d 00       	 .byte 0
+ 193 000e 0000     	 .space 2
+ 194 0010 01000000 	 .word 1
+ 195 0014 02000000 	 .word 2
+ 196 0018 04000000 	 .word 4
+ 197 001c 00       	 .byte 0
+ 198 001d 00000000 	 .space 7
+ 198      000000
+ 199 0024 88130000 	 .word 5000
+ 200 0028 8C130000 	 .word 5004
+ 201 002c 00000000 	 .word 0
+ 202 0030 00000000 	 .word 0
+ 203              	 .global PWM_CCU8_1_timer_handle
+ 204              	 .section .rodata.PWM_CCU8_1_timer_handle,"a",%progbits
+ 205              	 .align 2
+ 208              	PWM_CCU8_1_timer_handle:
+ 209 0000 01       	 .byte 1
+ 210 0001 00       	 .byte 0
+ 211 0002 00       	 .byte 0
+ 212 0003 00       	 .byte 0
+ 213 0004 00       	 .byte 0
+ 214 0005 000000   	 .space 3
+ 215 0008 14       	 .byte 20
+ 216 0009 000000   	 .space 3
+ 217 000c 00       	 .byte 0
+ 218 000d 00       	 .byte 0
+ 219 000e 0000     	 .space 2
+ 220              	 .global PWM_CCU8_1_event0_config
+ 221              	 .section .rodata.PWM_CCU8_1_event0_config,"a",%progbits
+ 222              	 .align 2
+ 225              	PWM_CCU8_1_event0_config:
+ 226 0000 00       	 .byte 0
+ 227 0001 00       	 .byte 0
+ 228 0002 01       	 .byte 1
+ 229 0003 00       	 .byte 0
+ 230              	 .global PWM_CCU8_1_event1_config
+ 231              	 .section .rodata.PWM_CCU8_1_event1_config,"a",%progbits
+ 232              	 .align 2
+ 235              	PWM_CCU8_1_event1_config:
+ 236 0000 00       	 .byte 0
+ 237 0001 00       	 .byte 0
+ 238 0002 01       	 .byte 1
+ 239 0003 00       	 .byte 0
+ 240              	 .global PWM_CCU8_1_event2_config
+ 241              	 .section .rodata.PWM_CCU8_1_event2_config,"a",%progbits
+ 242              	 .align 2
+ 245              	PWM_CCU8_1_event2_config:
+ 246 0000 00       	 .byte 0
+ 247 0001 00       	 .byte 0
+ 248 0002 01       	 .byte 1
+ 249 0003 00       	 .byte 0
+ 250              	 .global PWM_CCU8_1_dt_config
+ 251              	 .section .rodata.PWM_CCU8_1_dt_config,"a",%progbits
+ 252              	 .align 2
+ 255              	PWM_CCU8_1_dt_config:
+ 256 0000 4D       	 .byte 77
+ 257 0001 000000   	 .space 3
+ 258 0004 B4       	 .byte -76
+ 259 0005 B4       	 .byte -76
+ 260 0006 0000     	 .space 2
+ 261 0008 00       	 .byte 0
+ 262 0009 00       	 .byte 0
+ 263 000a 0000     	 .space 2
+ 264              	 .global PWM_CCU8_1_ch1_out0_config
+ 265              	 .section .rodata.PWM_CCU8_1_ch1_out0_config,"a",%progbits
+ 266              	 .align 2
+ 269              	PWM_CCU8_1_ch1_out0_config:
+ 270 0000 98       	 .byte -104
+ 271 0001 000000   	 .space 3
+ 272 0004 00000100 	 .word 65536
+ 273 0008 00       	 .byte 0
+ 274 0009 000000   	 .space 3
+ 275              	 .global PWM_CCU8_1_ch1_out1_config
+ 276              	 .section .rodata.PWM_CCU8_1_ch1_out1_config,"a",%progbits
+ 277              	 .align 2
+ 280              	PWM_CCU8_1_ch1_out1_config:
+ 281 0000 98       	 .byte -104
+ 282 0001 000000   	 .space 3
+ 283 0004 00000100 	 .word 65536
+ 284 0008 00       	 .byte 0
+ 285 0009 000000   	 .space 3
+ 286              	 .global PWM_CCU8_1_config_handle
+ 287              	 .section .rodata.PWM_CCU8_1_config_handle,"a",%progbits
+ 288              	 .align 2
+ 291              	PWM_CCU8_1_config_handle:
+ 292 0000 00       	 .byte 0
+ 293 0001 00       	 .space 1
+ 294 0002 5FEA     	 .short -5537
+ 295 0004 3075     	 .short 30000
+ 296 0006 1475     	 .short 29972
+ 297 0008 00       	 .byte 0
+ 298 0009 00       	 .byte 0
+ 299 000a 00       	 .byte 0
+ 300 000b 00       	 .byte 0
+ 301 000c 00       	 .byte 0
+ 302 000d 00       	 .byte 0
+ 303 000e 00       	 .byte 0
+ 304 000f 00       	 .byte 0
+ 305 0010 00       	 .byte 0
+ 306 0011 00       	 .byte 0
+ 307 0012 00       	 .byte 0
+ 308 0013 00       	 .byte 0
+ 309 0014 00       	 .byte 0
+ 310 0015 00       	 .byte 0
+ 311 0016 00       	 .byte 0
+ 312 0017 00       	 .byte 0
+ 313 0018 00       	 .byte 0
+ 314 0019 00       	 .byte 0
+ 315 001a 0000     	 .space 2
+ 316 001c 00000000 	 .word PWM_CCU8_1_event0_config
+ 317 0020 00000000 	 .word PWM_CCU8_1_event1_config
+ 318 0024 00000000 	 .word PWM_CCU8_1_event2_config
+ 319 0028 00       	 .byte 0
+ 320 0029 00       	 .byte 0
+ 321 002a 00       	 .byte 0
+ 322 002b 00       	 .byte 0
+ 323 002c 00       	 .byte 0
+ 324 002d 00       	 .byte 0
+ 325 002e 00       	 .byte 0
+ 326 002f 00       	 .byte 0
+ 327 0030 00       	 .byte 0
+ 328 0031 00       	 .byte 0
+ 329 0032 00       	 .byte 0
+ 330 0033 00       	 .byte 0
+ 331 0034 00       	 .byte 0
+ 332 0035 00       	 .byte 0
+ 333 0036 00       	 .byte 0
+ 334 0037 00       	 .byte 0
+ 335 0038 01       	 .byte 1
+ 336 0039 00       	 .byte 0
+ 337 003a 0000     	 .space 2
+ 338 003c 00000008 	 .word 134217728
+ 339 0040 00000000 	 .word PWM_CCU8_1_dt_config
+ 340 0044 00000000 	 .word PWM_CCU8_1_timer_handle
+ 341 0048 01       	 .byte 1
+ 342 0049 000000   	 .space 3
+ 343 004c 00800248 	 .word 1208123392
+ 344 0050 04       	 .byte 4
+ 345 0051 000000   	 .space 3
+ 346 0054 00000000 	 .word PWM_CCU8_1_ch1_out0_config
+ 347 0058 01       	 .byte 1
+ 348 0059 000000   	 .space 3
+ 349 005c 00800248 	 .word 1208123392
+ 350 0060 01       	 .byte 1
+ 351 0061 000000   	 .space 3
+ 352 0064 00000000 	 .word PWM_CCU8_1_ch1_out1_config
+ 353 0068 00       	 .byte 0
+ 354 0069 000000   	 .space 3
+ 355 006c 00000000 	 .word 0
+ 356 0070 00       	 .byte 0
+ 357 0071 000000   	 .space 3
+ 358 0074 00000000 	 .word 0
+ 359 0078 00       	 .byte 0
+ 360 0079 000000   	 .space 3
+ 361 007c 00000000 	 .word 0
+ 362 0080 00       	 .byte 0
+ 363 0081 000000   	 .space 3
+ 364 0084 00000000 	 .word 0
+ 365 0088 00000000 	 .word GLOBAL_CCU8_0
+ 366              	 .global PWM_CCU8_1
+ 367              	 .section .data.PWM_CCU8_1,"aw",%progbits
+ 368              	 .align 2
+ 371              	PWM_CCU8_1:
+ 372 0000 00000000 	 .word PWM_CCU8_1_config_handle
+ 373 0004 00000240 	 .word 1073872896
+ 374 0008 00020240 	 .word 1073873408
+ 375 000c 00       	 .byte 0
+ 376 000d 01       	 .byte 1
+ 377 000e 0000     	 .space 2
+ 378 0010 10000000 	 .word 16
+ 379 0014 20000000 	 .word 32
+ 380 0018 40000000 	 .word 64
+ 381 001c 00       	 .byte 0
+ 382 001d 00000000 	 .space 7
+ 382      000000
+ 383 0024 88130000 	 .word 5000
+ 384 0028 8C130000 	 .word 5004
+ 385 002c 00000000 	 .word 0
+ 386 0030 00000000 	 .word 0
+ 387              	 .global PWM_CCU8_2_timer_handle
+ 388              	 .section .rodata.PWM_CCU8_2_timer_handle,"a",%progbits
+ 389              	 .align 2
+ 392              	PWM_CCU8_2_timer_handle:
+ 393 0000 01       	 .byte 1
+ 394 0001 00       	 .byte 0
+ 395 0002 00       	 .byte 0
+ 396 0003 00       	 .byte 0
+ 397 0004 00       	 .byte 0
+ 398 0005 000000   	 .space 3
+ 399 0008 14       	 .byte 20
+ 400 0009 000000   	 .space 3
+ 401 000c 00       	 .byte 0
+ 402 000d 00       	 .byte 0
+ 403 000e 0000     	 .space 2
+ 404              	 .global PWM_CCU8_2_event0_config
+ 405              	 .section .rodata.PWM_CCU8_2_event0_config,"a",%progbits
+ 406              	 .align 2
+ 409              	PWM_CCU8_2_event0_config:
+ 410 0000 00       	 .byte 0
+ 411 0001 00       	 .byte 0
+ 412 0002 01       	 .byte 1
+ 413 0003 00       	 .byte 0
+ 414              	 .global PWM_CCU8_2_event1_config
+ 415              	 .section .rodata.PWM_CCU8_2_event1_config,"a",%progbits
+ 416              	 .align 2
+ 419              	PWM_CCU8_2_event1_config:
+ 420 0000 00       	 .byte 0
+ 421 0001 00       	 .byte 0
+ 422 0002 01       	 .byte 1
+ 423 0003 00       	 .byte 0
+ 424              	 .global PWM_CCU8_2_event2_config
+ 425              	 .section .rodata.PWM_CCU8_2_event2_config,"a",%progbits
+ 426              	 .align 2
+ 429              	PWM_CCU8_2_event2_config:
+ 430 0000 00       	 .byte 0
+ 431 0001 00       	 .byte 0
+ 432 0002 01       	 .byte 1
+ 433 0003 00       	 .byte 0
+ 434              	 .global PWM_CCU8_2_dt_config
+ 435              	 .section .rodata.PWM_CCU8_2_dt_config,"a",%progbits
+ 436              	 .align 2
+ 439              	PWM_CCU8_2_dt_config:
+ 440 0000 4D       	 .byte 77
+ 441 0001 000000   	 .space 3
+ 442 0004 B4       	 .byte -76
+ 443 0005 B4       	 .byte -76
+ 444 0006 0000     	 .space 2
+ 445 0008 00       	 .byte 0
+ 446 0009 00       	 .byte 0
+ 447 000a 0000     	 .space 2
+ 448              	 .global PWM_CCU8_2_ch1_out0_config
+ 449              	 .section .rodata.PWM_CCU8_2_ch1_out0_config,"a",%progbits
+ 450              	 .align 2
+ 453              	PWM_CCU8_2_ch1_out0_config:
+ 454 0000 98       	 .byte -104
+ 455 0001 000000   	 .space 3
+ 456 0004 00000100 	 .word 65536
+ 457 0008 00       	 .byte 0
+ 458 0009 000000   	 .space 3
+ 459              	 .global PWM_CCU8_2_ch1_out1_config
+ 460              	 .section .rodata.PWM_CCU8_2_ch1_out1_config,"a",%progbits
+ 461              	 .align 2
+ 464              	PWM_CCU8_2_ch1_out1_config:
+ 465 0000 98       	 .byte -104
+ 466 0001 000000   	 .space 3
+ 467 0004 00000100 	 .word 65536
+ 468 0008 00       	 .byte 0
+ 469 0009 000000   	 .space 3
+ 470              	 .global PWM_CCU8_2_config_handle
+ 471              	 .section .rodata.PWM_CCU8_2_config_handle,"a",%progbits
+ 472              	 .align 2
+ 475              	PWM_CCU8_2_config_handle:
+ 476 0000 00       	 .byte 0
+ 477 0001 00       	 .space 1
+ 478 0002 5FEA     	 .short -5537
+ 479 0004 3075     	 .short 30000
+ 480 0006 1475     	 .short 29972
+ 481 0008 00       	 .byte 0
+ 482 0009 00       	 .byte 0
+ 483 000a 00       	 .byte 0
+ 484 000b 00       	 .byte 0
+ 485 000c 00       	 .byte 0
+ 486 000d 00       	 .byte 0
+ 487 000e 00       	 .byte 0
+ 488 000f 00       	 .byte 0
+ 489 0010 00       	 .byte 0
+ 490 0011 00       	 .byte 0
+ 491 0012 00       	 .byte 0
+ 492 0013 00       	 .byte 0
+ 493 0014 00       	 .byte 0
+ 494 0015 00       	 .byte 0
+ 495 0016 00       	 .byte 0
+ 496 0017 00       	 .byte 0
+ 497 0018 00       	 .byte 0
+ 498 0019 00       	 .byte 0
+ 499 001a 0000     	 .space 2
+ 500 001c 00000000 	 .word PWM_CCU8_2_event0_config
+ 501 0020 00000000 	 .word PWM_CCU8_2_event1_config
+ 502 0024 00000000 	 .word PWM_CCU8_2_event2_config
+ 503 0028 00       	 .byte 0
+ 504 0029 00       	 .byte 0
+ 505 002a 00       	 .byte 0
+ 506 002b 00       	 .byte 0
+ 507 002c 00       	 .byte 0
+ 508 002d 00       	 .byte 0
+ 509 002e 00       	 .byte 0
+ 510 002f 00       	 .byte 0
+ 511 0030 00       	 .byte 0
+ 512 0031 00       	 .byte 0
+ 513 0032 00       	 .byte 0
+ 514 0033 00       	 .byte 0
+ 515 0034 00       	 .byte 0
+ 516 0035 00       	 .byte 0
+ 517 0036 00       	 .byte 0
+ 518 0037 00       	 .byte 0
+ 519 0038 01       	 .byte 1
+ 520 0039 00       	 .byte 0
+ 521 003a 0000     	 .space 2
+ 522 003c 00000010 	 .word 268435456
+ 523 0040 00000000 	 .word PWM_CCU8_2_dt_config
+ 524 0044 00000000 	 .word PWM_CCU8_2_timer_handle
+ 525 0048 01       	 .byte 1
+ 526 0049 000000   	 .space 3
+ 527 004c 00800248 	 .word 1208123392
+ 528 0050 03       	 .byte 3
+ 529 0051 000000   	 .space 3
+ 530 0054 00000000 	 .word PWM_CCU8_2_ch1_out0_config
+ 531 0058 01       	 .byte 1
+ 532 0059 000000   	 .space 3
+ 533 005c 00800248 	 .word 1208123392
+ 534 0060 00       	 .byte 0
+ 535 0061 000000   	 .space 3
+ 536 0064 00000000 	 .word PWM_CCU8_2_ch1_out1_config
+ 537 0068 00       	 .byte 0
+ 538 0069 000000   	 .space 3
+ 539 006c 00000000 	 .word 0
+ 540 0070 00       	 .byte 0
+ 541 0071 000000   	 .space 3
+ 542 0074 00000000 	 .word 0
+ 543 0078 00       	 .byte 0
+ 544 0079 000000   	 .space 3
+ 545 007c 00000000 	 .word 0
+ 546 0080 00       	 .byte 0
+ 547 0081 000000   	 .space 3
+ 548 0084 00000000 	 .word 0
+ 549 0088 00000000 	 .word GLOBAL_CCU8_0
+ 550              	 .global PWM_CCU8_2
+ 551              	 .section .data.PWM_CCU8_2,"aw",%progbits
+ 552              	 .align 2
+ 555              	PWM_CCU8_2:
+ 556 0000 00000000 	 .word PWM_CCU8_2_config_handle
+ 557 0004 00000240 	 .word 1073872896
+ 558 0008 00030240 	 .word 1073873664
+ 559 000c 00       	 .byte 0
+ 560 000d 02       	 .byte 2
+ 561 000e 0000     	 .space 2
+ 562 0010 00010000 	 .word 256
+ 563 0014 00020000 	 .word 512
+ 564 0018 00040000 	 .word 1024
+ 565 001c 00       	 .byte 0
+ 566 001d 00000000 	 .space 7
+ 566      000000
+ 567 0024 88130000 	 .word 5000
+ 568 0028 8C130000 	 .word 5004
+ 569 002c 00000000 	 .word 0
+ 570 0030 00000000 	 .word 0
+ 571              	 .text
+ 572              	.Letext0:
+ 573              	 .file 1 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 574              	 .file 2 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 575              	 .file 3 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+ 576              	 .file 4 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_gpio.h"
+ 577              	 .file 5 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_gpio.h"
+ 578              	 .file 6 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_ccu8.h"
+ 579              	 .file 7 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_scu.h"
+ 580              	 .file 8 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU8/global_ccu8.h"
+ 581              	 .file 9 "../Dave/Generated/PWM_CCU8/pwm_ccu8.h"
+ 582              	 .file 10 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 583              	 .file 11 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/core_cm4.h"
+ 584              	 .file 12 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
+ 585              	 .file 13 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU8/global_ccu8_extern.h"
+ 586              	 .file 14 "../Dave/Generated/PWM_CCU8/pwm_ccu8_conf.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 pwm_ccu8_conf.c
+    {standard input}:24     .rodata.PWM_CCU8_0_timer_handle:00000000 PWM_CCU8_0_timer_handle
+    {standard input}:21     .rodata.PWM_CCU8_0_timer_handle:00000000 $d
+    {standard input}:41     .rodata.PWM_CCU8_0_event0_config:00000000 PWM_CCU8_0_event0_config
+    {standard input}:38     .rodata.PWM_CCU8_0_event0_config:00000000 $d
+    {standard input}:51     .rodata.PWM_CCU8_0_event1_config:00000000 PWM_CCU8_0_event1_config
+    {standard input}:48     .rodata.PWM_CCU8_0_event1_config:00000000 $d
+    {standard input}:61     .rodata.PWM_CCU8_0_event2_config:00000000 PWM_CCU8_0_event2_config
+    {standard input}:58     .rodata.PWM_CCU8_0_event2_config:00000000 $d
+    {standard input}:71     .rodata.PWM_CCU8_0_dt_config:00000000 PWM_CCU8_0_dt_config
+    {standard input}:68     .rodata.PWM_CCU8_0_dt_config:00000000 $d
+    {standard input}:85     .rodata.PWM_CCU8_0_ch1_out0_config:00000000 PWM_CCU8_0_ch1_out0_config
+    {standard input}:82     .rodata.PWM_CCU8_0_ch1_out0_config:00000000 $d
+    {standard input}:96     .rodata.PWM_CCU8_0_ch1_out1_config:00000000 PWM_CCU8_0_ch1_out1_config
+    {standard input}:93     .rodata.PWM_CCU8_0_ch1_out1_config:00000000 $d
+    {standard input}:107    .rodata.PWM_CCU8_0_config_handle:00000000 PWM_CCU8_0_config_handle
+    {standard input}:104    .rodata.PWM_CCU8_0_config_handle:00000000 $d
+    {standard input}:187    .data.PWM_CCU8_0:00000000 PWM_CCU8_0
+    {standard input}:184    .data.PWM_CCU8_0:00000000 $d
+    {standard input}:208    .rodata.PWM_CCU8_1_timer_handle:00000000 PWM_CCU8_1_timer_handle
+    {standard input}:205    .rodata.PWM_CCU8_1_timer_handle:00000000 $d
+    {standard input}:225    .rodata.PWM_CCU8_1_event0_config:00000000 PWM_CCU8_1_event0_config
+    {standard input}:222    .rodata.PWM_CCU8_1_event0_config:00000000 $d
+    {standard input}:235    .rodata.PWM_CCU8_1_event1_config:00000000 PWM_CCU8_1_event1_config
+    {standard input}:232    .rodata.PWM_CCU8_1_event1_config:00000000 $d
+    {standard input}:245    .rodata.PWM_CCU8_1_event2_config:00000000 PWM_CCU8_1_event2_config
+    {standard input}:242    .rodata.PWM_CCU8_1_event2_config:00000000 $d
+    {standard input}:255    .rodata.PWM_CCU8_1_dt_config:00000000 PWM_CCU8_1_dt_config
+    {standard input}:252    .rodata.PWM_CCU8_1_dt_config:00000000 $d
+    {standard input}:269    .rodata.PWM_CCU8_1_ch1_out0_config:00000000 PWM_CCU8_1_ch1_out0_config
+    {standard input}:266    .rodata.PWM_CCU8_1_ch1_out0_config:00000000 $d
+    {standard input}:280    .rodata.PWM_CCU8_1_ch1_out1_config:00000000 PWM_CCU8_1_ch1_out1_config
+    {standard input}:277    .rodata.PWM_CCU8_1_ch1_out1_config:00000000 $d
+    {standard input}:291    .rodata.PWM_CCU8_1_config_handle:00000000 PWM_CCU8_1_config_handle
+    {standard input}:288    .rodata.PWM_CCU8_1_config_handle:00000000 $d
+    {standard input}:371    .data.PWM_CCU8_1:00000000 PWM_CCU8_1
+    {standard input}:368    .data.PWM_CCU8_1:00000000 $d
+    {standard input}:392    .rodata.PWM_CCU8_2_timer_handle:00000000 PWM_CCU8_2_timer_handle
+    {standard input}:389    .rodata.PWM_CCU8_2_timer_handle:00000000 $d
+    {standard input}:409    .rodata.PWM_CCU8_2_event0_config:00000000 PWM_CCU8_2_event0_config
+    {standard input}:406    .rodata.PWM_CCU8_2_event0_config:00000000 $d
+    {standard input}:419    .rodata.PWM_CCU8_2_event1_config:00000000 PWM_CCU8_2_event1_config
+    {standard input}:416    .rodata.PWM_CCU8_2_event1_config:00000000 $d
+    {standard input}:429    .rodata.PWM_CCU8_2_event2_config:00000000 PWM_CCU8_2_event2_config
+    {standard input}:426    .rodata.PWM_CCU8_2_event2_config:00000000 $d
+    {standard input}:439    .rodata.PWM_CCU8_2_dt_config:00000000 PWM_CCU8_2_dt_config
+    {standard input}:436    .rodata.PWM_CCU8_2_dt_config:00000000 $d
+    {standard input}:453    .rodata.PWM_CCU8_2_ch1_out0_config:00000000 PWM_CCU8_2_ch1_out0_config
+    {standard input}:450    .rodata.PWM_CCU8_2_ch1_out0_config:00000000 $d
+    {standard input}:464    .rodata.PWM_CCU8_2_ch1_out1_config:00000000 PWM_CCU8_2_ch1_out1_config
+    {standard input}:461    .rodata.PWM_CCU8_2_ch1_out1_config:00000000 $d
+    {standard input}:475    .rodata.PWM_CCU8_2_config_handle:00000000 PWM_CCU8_2_config_handle
+    {standard input}:472    .rodata.PWM_CCU8_2_config_handle:00000000 $d
+    {standard input}:555    .data.PWM_CCU8_2:00000000 PWM_CCU8_2
+    {standard input}:552    .data.PWM_CCU8_2:00000000 $d
+
+UNDEFINED SYMBOLS
+GLOBAL_CCU8_0

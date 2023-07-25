@@ -1,0 +1,155 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "pwm_ccu4_conf.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .global PWM_CCU4_0_timer_handle
+  20              	 .section .rodata.PWM_CCU4_0_timer_handle,"a",%progbits
+  21              	 .align 2
+  24              	PWM_CCU4_0_timer_handle:
+  25 0000 00       	 .byte 0
+  26 0001 00       	 .byte 0
+  27 0002 00       	 .byte 0
+  28 0003 00       	 .byte 0
+  29 0004 08       	 .byte 8
+  30 0005 00       	 .byte 0
+  31 0006 0000     	 .space 2
+  32              	 .global PWM_CCU4_0_event0_config
+  33              	 .section .rodata.PWM_CCU4_0_event0_config,"a",%progbits
+  34              	 .align 2
+  37              	PWM_CCU4_0_event0_config:
+  38 0000 00       	 .byte 0
+  39 0001 00       	 .byte 0
+  40 0002 01       	 .byte 1
+  41 0003 00       	 .byte 0
+  42              	 .global PWM_CCU4_0_event1_config
+  43              	 .section .rodata.PWM_CCU4_0_event1_config,"a",%progbits
+  44              	 .align 2
+  47              	PWM_CCU4_0_event1_config:
+  48 0000 00       	 .byte 0
+  49 0001 00       	 .byte 0
+  50 0002 01       	 .byte 1
+  51 0003 00       	 .byte 0
+  52              	 .global PWM_CCU4_0_event2_config
+  53              	 .section .rodata.PWM_CCU4_0_event2_config,"a",%progbits
+  54              	 .align 2
+  57              	PWM_CCU4_0_event2_config:
+  58 0000 00       	 .byte 0
+  59 0001 00       	 .byte 0
+  60 0002 01       	 .byte 1
+  61 0003 00       	 .byte 0
+  62              	 .global PWM_CCU4_0_config_handle
+  63              	 .section .rodata.PWM_CCU4_0_config_handle,"a",%progbits
+  64              	 .align 2
+  67              	PWM_CCU4_0_config_handle:
+  68 0000 01       	 .byte 1
+  69 0001 00       	 .space 1
+  70 0002 1AB7     	 .short -18662
+  71 0004 8D5B     	 .short 23437
+  72 0006 00       	 .byte 0
+  73 0007 00       	 .byte 0
+  74 0008 00       	 .byte 0
+  75 0009 00       	 .byte 0
+  76 000a 00       	 .byte 0
+  77 000b 00       	 .byte 0
+  78 000c 00       	 .byte 0
+  79 000d 00       	 .byte 0
+  80 000e 00       	 .byte 0
+  81 000f 00       	 .byte 0
+  82 0010 00       	 .byte 0
+  83 0011 00       	 .byte 0
+  84 0012 00       	 .byte 0
+  85 0013 00       	 .byte 0
+  86 0014 00000000 	 .word PWM_CCU4_0_event0_config
+  87 0018 00000000 	 .word PWM_CCU4_0_event1_config
+  88 001c 00000000 	 .word PWM_CCU4_0_event2_config
+  89 0020 00       	 .byte 0
+  90 0021 00       	 .byte 0
+  91 0022 00       	 .byte 0
+  92 0023 00       	 .byte 0
+  93 0024 00       	 .byte 0
+  94 0025 00       	 .byte 0
+  95 0026 00       	 .byte 0
+  96 0027 00       	 .byte 0
+  97 0028 00       	 .byte 0
+  98 0029 00       	 .byte 0
+  99 002a 00       	 .byte 0
+ 100 002b 00       	 .byte 0
+ 101 002c 00       	 .byte 0
+ 102 002d 00       	 .byte 0
+ 103 002e 00       	 .byte 0
+ 104 002f 01       	 .byte 1
+ 105 0030 00       	 .byte 0
+ 106 0031 000000   	 .space 3
+ 107 0034 00000008 	 .word 134217728
+ 108 0038 00000000 	 .word PWM_CCU4_0_timer_handle
+ 109 003c 00       	 .byte 0
+ 110 003d 000000   	 .space 3
+ 111 0040 00000000 	 .word 0
+ 112 0044 00       	 .byte 0
+ 113 0045 000000   	 .space 3
+ 114 0048 00000000 	 .word 0
+ 115 004c 00000000 	 .word GLOBAL_CCU4_0
+ 116              	 .global PWM_CCU4_0
+ 117              	 .section .data.PWM_CCU4_0,"aw",%progbits
+ 118              	 .align 2
+ 121              	PWM_CCU4_0:
+ 122 0000 00000000 	 .word PWM_CCU4_0_config_handle
+ 123 0004 00C00040 	 .word 1073790976
+ 124 0008 00C20040 	 .word 1073791488
+ 125 000c 00       	 .byte 0
+ 126 000d 01       	 .byte 1
+ 127 000e 0000     	 .space 2
+ 128 0010 10000000 	 .word 16
+ 129 0014 20000000 	 .word 32
+ 130 0018 40000000 	 .word 64
+ 131 001c 00       	 .byte 0
+ 132 001d 00000000 	 .space 7
+ 132      000000
+ 133 0024 88130000 	 .word 5000
+ 134              	 .text
+ 135              	.Letext0:
+ 136              	 .file 1 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 137              	 .file 2 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 138              	 .file 3 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+ 139              	 .file 4 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_gpio.h"
+ 140              	 .file 5 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_gpio.h"
+ 141              	 .file 6 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_ccu4.h"
+ 142              	 .file 7 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_scu.h"
+ 143              	 .file 8 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU4/global_ccu4.h"
+ 144              	 .file 9 "../Dave/Generated/PWM_CCU4/pwm_ccu4.h"
+ 145              	 .file 10 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 146              	 .file 11 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/core_cm4.h"
+ 147              	 .file 12 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
+ 148              	 .file 13 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU4/global_ccu4_extern.h"
+ 149              	 .file 14 "../Dave/Generated/PWM_CCU4/pwm_ccu4_conf.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 pwm_ccu4_conf.c
+    {standard input}:24     .rodata.PWM_CCU4_0_timer_handle:00000000 PWM_CCU4_0_timer_handle
+    {standard input}:21     .rodata.PWM_CCU4_0_timer_handle:00000000 $d
+    {standard input}:37     .rodata.PWM_CCU4_0_event0_config:00000000 PWM_CCU4_0_event0_config
+    {standard input}:34     .rodata.PWM_CCU4_0_event0_config:00000000 $d
+    {standard input}:47     .rodata.PWM_CCU4_0_event1_config:00000000 PWM_CCU4_0_event1_config
+    {standard input}:44     .rodata.PWM_CCU4_0_event1_config:00000000 $d
+    {standard input}:57     .rodata.PWM_CCU4_0_event2_config:00000000 PWM_CCU4_0_event2_config
+    {standard input}:54     .rodata.PWM_CCU4_0_event2_config:00000000 $d
+    {standard input}:67     .rodata.PWM_CCU4_0_config_handle:00000000 PWM_CCU4_0_config_handle
+    {standard input}:64     .rodata.PWM_CCU4_0_config_handle:00000000 $d
+    {standard input}:121    .data.PWM_CCU4_0:00000000 PWM_CCU4_0
+    {standard input}:118    .data.PWM_CCU4_0:00000000 $d
+
+UNDEFINED SYMBOLS
+GLOBAL_CCU4_0

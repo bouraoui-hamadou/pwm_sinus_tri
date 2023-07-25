@@ -1,0 +1,87 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "counter_conf.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .global COUNTER_0_event0_config
+  20              	 .section .data.COUNTER_0_event0_config,"aw",%progbits
+  21              	 .align 2
+  24              	COUNTER_0_event0_config:
+  25 0000 00       	 .byte 0
+  26 0001 02       	 .byte 2
+  27 0002 01       	 .byte 1
+  28 0003 00       	 .byte 0
+  29              	 .global COUNTER_0_ccu4_config
+  30              	 .section .data.COUNTER_0_ccu4_config,"aw",%progbits
+  31              	 .align 2
+  34              	COUNTER_0_ccu4_config:
+  35 0000 00000000 	 .word GLOBAL_CCU4_0
+  36 0004 00C00040 	 .word 1073790976
+  37 0008 00C10040 	 .word 1073791232
+  38 000c 00000000 	 .word COUNTER_0_event0_config
+  39 0010 00000000 	 .word 0
+  40 0014 00000000 	 .word 0
+  41 0018 01000000 	 .word 1
+  42 001c C800     	 .short 200
+  43 001e 00       	 .byte 0
+  44 001f 00       	 .byte 0
+  45 0020 00       	 .byte 0
+  46 0021 00       	 .byte 0
+  47 0022 00       	 .byte 0
+  48 0023 00       	 .byte 0
+  49 0024 00       	 .byte 0
+  50 0025 02       	 .byte 2
+  51 0026 00       	 .byte 0
+  52 0027 00       	 .byte 0
+  53 0028 00       	 .byte 0
+  54 0029 00       	 .byte 0
+  55 002a 00       	 .byte 0
+  56 002b 00       	 .byte 0
+  57 002c 00       	 .byte 0
+  58 002d 00       	 .byte 0
+  59 002e 0000     	 .space 2
+  60              	 .global COUNTER_0
+  61              	 .section .data.COUNTER_0,"aw",%progbits
+  62              	 .align 2
+  65              	COUNTER_0:
+  66 0000 00       	 .byte 0
+  67 0001 000000   	 .space 3
+  68 0004 00000000 	 .word COUNTER_0_ccu4_config
+  69              	 .text
+  70              	.Letext0:
+  71              	 .file 1 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+  72              	 .file 2 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+  73              	 .file 3 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+  74              	 .file 4 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_ccu4.h"
+  75              	 .file 5 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_scu.h"
+  76              	 .file 6 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU4/global_ccu4.h"
+  77              	 .file 7 "../Dave/Generated/COUNTER/counter.h"
+  78              	 .file 8 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/cmsis_gcc.h"
+  79              	 .file 9 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/core_cm4.h"
+  80              	 .file 10 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
+  81              	 .file 11 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU4/global_ccu4_extern.h"
+  82              	 .file 12 "../Dave/Generated/COUNTER/counter_conf.c"
+DEFINED SYMBOLS
+                            *ABS*:00000000 counter_conf.c
+    {standard input}:24     .data.COUNTER_0_event0_config:00000000 COUNTER_0_event0_config
+    {standard input}:21     .data.COUNTER_0_event0_config:00000000 $d
+    {standard input}:34     .data.COUNTER_0_ccu4_config:00000000 COUNTER_0_ccu4_config
+    {standard input}:31     .data.COUNTER_0_ccu4_config:00000000 $d
+    {standard input}:65     .data.COUNTER_0:00000000 COUNTER_0
+    {standard input}:62     .data.COUNTER_0:00000000 $d
+
+UNDEFINED SYMBOLS
+GLOBAL_CCU4_0

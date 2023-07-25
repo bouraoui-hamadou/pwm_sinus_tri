@@ -1,0 +1,2067 @@
+   1              	 .syntax unified
+   2              	 .cpu cortex-m4
+   3              	 .eabi_attribute 27,3
+   4              	 .fpu fpv4-sp-d16
+   5              	 .eabi_attribute 20,1
+   6              	 .eabi_attribute 21,1
+   7              	 .eabi_attribute 23,3
+   8              	 .eabi_attribute 24,1
+   9              	 .eabi_attribute 25,1
+  10              	 .eabi_attribute 26,1
+  11              	 .eabi_attribute 30,6
+  12              	 .eabi_attribute 34,1
+  13              	 .eabi_attribute 18,4
+  14              	 .thumb
+  15              	 .file "main.c"
+  16              	 .text
+  17              	.Ltext0:
+  18              	 .cfi_sections .debug_frame
+  19              	 .comm sin_table,2048,8
+  20              	 .comm U_1,8,8
+  21              	 .comm f_1,8,8
+  22              	 .comm f_diff,8,8
+  23              	 .comm led_freq,2,2
+  24              	 .global x
+  25              	 .section .bss.x,"aw",%nobits
+  28              	x:
+  29 0000 00       	 .space 1
+  30              	 .global y
+  31              	 .section .data.y,"aw",%progbits
+  34              	y:
+  35 0000 01       	 .byte 1
+  36              	 .comm time,4,4
+  37              	 .comm time_sample,8,8
+  38              	 .comm result,2,2
+  39              	 .comm U_u,8,8
+  40              	 .comm U_v,8,8
+  41              	 .comm U_w,8,8
+  42              	 .global str_dc
+  43              	 .section .data.str_dc,"aw",%progbits
+  44              	 .align 2
+  47              	str_dc:
+  48 0000 44432D42 	 .ascii "DC-Bremsen    \000"
+  48      72656D73 
+  48      656E2020 
+  48      202000
+  49              	 .global str_cl
+  50 000f 00       	 .section .data.str_cl,"aw",%progbits
+  51              	 .align 2
+  54              	str_cl:
+  55 0000 42657363 	 .ascii "Beschleunigung\000"
+  55      686C6575 
+  55      6E696775 
+  55      6E6700
+  56              	 .global str_aus
+  57 000f 00       	 .section .data.str_aus,"aw",%progbits
+  58              	 .align 2
+  61              	str_aus:
+  62 0000 53746F70 	 .ascii "Stop/Auslaufen\000"
+  62      2F417573 
+  62      6C617566 
+  62      656E00
+  63              	 .global str_wechsel
+  64 000f 00       	 .section .data.str_wechsel,"aw",%progbits
+  65              	 .align 2
+  68              	str_wechsel:
+  69 0000 44726568 	 .ascii "Drehwechsel   \000"
+  69      77656368 
+  69      73656C20 
+  69      202000
+  70              	 .global str_dreh
+  71 000f 00       	 .section .data.str_dreh,"aw",%progbits
+  72              	 .align 2
+  75              	str_dreh:
+  76 0000 20202044 	 .ascii "   Dreh:\000"
+  76      7265683A 
+  76      00
+  77              	 .global str_p
+  78 0009 000000   	 .section .data.str_p,"aw",%progbits
+  79              	 .align 2
+  82              	str_p:
+  83 0000 282B2900 	 .ascii "(+)\000"
+  84              	 .global str_m
+  85              	 .section .data.str_m,"aw",%progbits
+  86              	 .align 2
+  89              	str_m:
+  90 0000 282D2900 	 .ascii "(-)\000"
+  91              	 .global index_count_1
+  92              	 .section .bss.index_count_1,"aw",%nobits
+  95              	index_count_1:
+  96 0000 00       	 .space 1
+  97              	 .global index_count_2
+  98              	 .section .data.index_count_2,"aw",%progbits
+ 101              	index_count_2:
+ 102 0000 AB       	 .byte -85
+ 103              	 .global index_count_3
+ 104              	 .section .data.index_count_3,"aw",%progbits
+ 107              	index_count_3:
+ 108 0000 55       	 .byte 85
+ 109              	 .global f_aktuell
+ 110              	 .section .bss.f_aktuell,"aw",%nobits
+ 111              	 .align 3
+ 114              	f_aktuell:
+ 115 0000 00000000 	 .space 8
+ 115      00000000 
+ 116              	 .global U_N
+ 117              	 .section .data.U_N,"aw",%progbits
+ 118              	 .align 3
+ 121              	U_N:
+ 122 0000 00000000 	 .word 0
+ 123 0004 00005E40 	 .word 1079902208
+ 124              	 .global f_N
+ 125              	 .section .data.f_N,"aw",%progbits
+ 126              	 .align 3
+ 129              	f_N:
+ 130 0000 00000000 	 .word 0
+ 131 0004 00004940 	 .word 1078525952
+ 132              	 .comm str2,6,4
+ 133              	 .global str4
+ 134              	 .section .data.str4,"aw",%progbits
+ 135              	 .align 2
+ 138              	str4:
+ 139 0000 20202066 	 .ascii "   f:\000"
+ 139      3A00
+ 140 0006 00       	 .space 1
+ 141              	 .comm str5,5,4
+ 142              	 .global str6
+ 143 0007 00       	 .section .data.str6,"aw",%progbits
+ 144              	 .align 2
+ 147              	str6:
+ 148 0000 202F2000 	 .ascii " / \000"
+ 149              	 .comm str7,5,4
+ 150              	 .global pin_status1
+ 151              	 .section .bss.pin_status1,"aw",%nobits
+ 154              	pin_status1:
+ 155 0000 00       	 .space 1
+ 156              	 .global pin_status2
+ 157              	 .section .bss.pin_status2,"aw",%nobits
+ 160              	pin_status2:
+ 161 0000 00       	 .space 1
+ 162              	 .global d
+ 163              	 .section .data.d,"aw",%progbits
+ 164              	 .align 2
+ 167              	d:
+ 168 0000 88130000 	 .word 5000
+ 169              	 .global f
+ 170              	 .section .data.f,"aw",%progbits
+ 171              	 .align 2
+ 174              	f:
+ 175 0000 E8030000 	 .word 1000
+ 176              	 .global d1
+ 177              	 .section .data.d1,"aw",%progbits
+ 178              	 .align 2
+ 181              	d1:
+ 182 0000 88130000 	 .word 5000
+ 183              	 .global d2
+ 184              	 .section .data.d2,"aw",%progbits
+ 185              	 .align 2
+ 188              	d2:
+ 189 0000 88130000 	 .word 5000
+ 190              	 .global d3
+ 191              	 .section .data.d3,"aw",%progbits
+ 192              	 .align 2
+ 195              	d3:
+ 196 0000 88130000 	 .word 5000
+ 197              	 .global d2_DC
+ 198              	 .section .data.d2_DC,"aw",%progbits
+ 199              	 .align 2
+ 202              	d2_DC:
+ 203 0000 34210000 	 .word 8500
+ 204              	 .global d3_DC
+ 205              	 .section .data.d3_DC,"aw",%progbits
+ 206              	 .align 2
+ 209              	d3_DC:
+ 210 0000 34210000 	 .word 8500
+ 211              	 .global pin_status_bremsen
+ 212              	 .section .bss.pin_status_bremsen,"aw",%nobits
+ 215              	pin_status_bremsen:
+ 216 0000 00       	 .space 1
+ 217              	 .global current_index_status
+ 218              	 .section .bss.current_index_status,"aw",%nobits
+ 221              	current_index_status:
+ 222 0000 00       	 .space 1
+ 223              	 .section .rodata
+ 224              	 .align 2
+ 225              	.LC0:
+ 226 0000 256600   	 .ascii "%f\000"
+ 227 0003 00       	 .section .text.write_display,"ax",%progbits
+ 228              	 .align 2
+ 229              	 .global write_display
+ 230              	 .thumb
+ 231              	 .thumb_func
+ 233              	write_display:
+ 234              	.LFB382:
+ 235              	 .file 1 "../main.c"
+   1:../main.c     **** 
+   2:../main.c     **** 
+   3:../main.c     **** /*
+   4:../main.c     ****  * main.c
+   5:../main.c     ****  *
+   6:../main.c     ****  *  Created on: 2023 Mar 13 14:29:51
+   7:../main.c     ****  *  Author: rybsk
+   8:../main.c     ****  */
+   9:../main.c     **** 
+  10:../main.c     **** 
+  11:../main.c     **** 
+  12:../main.c     **** #include "DAVE.h"                 //Declarations from DAVE Code Generation (includes SFR declaratio
+  13:../main.c     **** #include "lcd-routines.h"
+  14:../main.c     **** #include "math.h" 			// for sin and pi
+  15:../main.c     **** 
+  16:../main.c     **** /*
+  17:../main.c     **** 
+  18:../main.c     ****  * @brief main() - Application entry point
+  19:../main.c     ****  *
+  20:../main.c     ****  * <b>Details of function</b><br>
+  21:../main.c     ****  * This routine is the application entry point. It is invoked by the device startup code. It is res
+  22:../main.c     ****  * invoking the APP initialization dispatcher routine - DAVE_Init() and hosting the place-holder fo
+  23:../main.c     ****  * code.
+  24:../main.c     ****  */
+  25:../main.c     **** // create sin table from 0 to 2pi,  0 to 4096-1 values -> good enought?
+  26:../main.c     **** double sin_table[256];
+  27:../main.c     **** double U_1;
+  28:../main.c     **** double f_1;
+  29:../main.c     **** double f_diff;
+  30:../main.c     **** uint16_t led_freq;
+  31:../main.c     **** uint8_t x = 0;
+  32:../main.c     **** uint8_t y = 1;
+  33:../main.c     **** uint32_t time;
+  34:../main.c     **** double time_sample;
+  35:../main.c     **** XMC_VADC_RESULT_SIZE_t result;
+  36:../main.c     **** double U_u;
+  37:../main.c     **** double U_v;
+  38:../main.c     **** double U_w;
+  39:../main.c     **** char str_dc[15] = "DC-Bremsen    ";
+  40:../main.c     **** char str_cl[15] = "Beschleunigung";
+  41:../main.c     **** char str_aus[15] = "Stop/Auslaufen";
+  42:../main.c     **** char str_wechsel[15] = "Drehwechsel   ";
+  43:../main.c     **** char str_dreh[9] = "   Dreh:";
+  44:../main.c     **** char str_p[4] = "(+)";
+  45:../main.c     **** char str_m[4] = "(-)";
+  46:../main.c     **** uint8_t index_count_1 = 0;
+  47:../main.c     **** uint8_t index_count_2 = 171;
+  48:../main.c     **** uint8_t index_count_3 = 85;
+  49:../main.c     **** 
+  50:../main.c     **** double f_aktuell = 0;
+  51:../main.c     **** 
+  52:../main.c     **** double U_N = 120;
+  53:../main.c     **** double f_N = 50;
+  54:../main.c     **** char str2[6];
+  55:../main.c     **** char str4[7] = {"   f:"};
+  56:../main.c     **** char str5[5];
+  57:../main.c     **** char str6[4] = {" / "};
+  58:../main.c     **** char str7[5];
+  59:../main.c     **** 
+  60:../main.c     **** // Variable für die PinInterrupts
+  61:../main.c     ****   bool pin_status1 = false; // Abschalten
+  62:../main.c     ****   bool pin_status2 = false; // DC_Bremsen
+  63:../main.c     ****   uint32_t d = 5000;
+  64:../main.c     ****   uint32_t f = 1000;
+  65:../main.c     ****   uint32_t d1 = 5000;
+  66:../main.c     ****   uint32_t d2 = 5000;
+  67:../main.c     ****   uint32_t d3 = 5000;
+  68:../main.c     ****   uint32_t d2_DC = 8500; //24/60
+  69:../main.c     ****   uint32_t d3_DC = 8500;
+  70:../main.c     **** 
+  71:../main.c     ****   bool pin_status_bremsen = false;
+  72:../main.c     ****   bool current_index_status = false;
+  73:../main.c     **** 
+  74:../main.c     **** void write_display()
+  75:../main.c     **** {
+ 236              	 .loc 1 75 0
+ 237              	 .cfi_startproc
+ 238              	 
+ 239              	 
+ 240 0000 80B5     	 push {r7,lr}
+ 241              	.LCFI0:
+ 242              	 .cfi_def_cfa_offset 8
+ 243              	 .cfi_offset 7,-8
+ 244              	 .cfi_offset 14,-4
+ 245 0002 8CB0     	 sub sp,sp,#48
+ 246              	.LCFI1:
+ 247              	 .cfi_def_cfa_offset 56
+ 248 0004 02AF     	 add r7,sp,#8
+ 249              	.LCFI2:
+ 250              	 .cfi_def_cfa 7,48
+  76:../main.c     **** 	 char str1[40] = {"U:"};
+ 251              	 .loc 1 76 0
+ 252 0006 43F65523 	 movw r3,#14933
+ 253 000a 3B60     	 str r3,[r7]
+ 254 000c 3B1D     	 adds r3,r7,#4
+ 255 000e 0022     	 movs r2,#0
+ 256 0010 1A60     	 str r2,[r3]
+ 257 0012 0433     	 adds r3,r3,#4
+ 258 0014 0022     	 movs r2,#0
+ 259 0016 1A60     	 str r2,[r3]
+ 260 0018 0433     	 adds r3,r3,#4
+ 261 001a 0022     	 movs r2,#0
+ 262 001c 1A60     	 str r2,[r3]
+ 263 001e 0433     	 adds r3,r3,#4
+ 264 0020 0022     	 movs r2,#0
+ 265 0022 1A60     	 str r2,[r3]
+ 266 0024 0433     	 adds r3,r3,#4
+ 267 0026 0022     	 movs r2,#0
+ 268 0028 1A60     	 str r2,[r3]
+ 269 002a 0433     	 adds r3,r3,#4
+ 270 002c 0022     	 movs r2,#0
+ 271 002e 1A60     	 str r2,[r3]
+ 272 0030 0433     	 adds r3,r3,#4
+ 273 0032 0022     	 movs r2,#0
+ 274 0034 1A60     	 str r2,[r3]
+ 275 0036 0433     	 adds r3,r3,#4
+ 276 0038 0022     	 movs r2,#0
+ 277 003a 1A60     	 str r2,[r3]
+ 278 003c 0433     	 adds r3,r3,#4
+ 279 003e 0022     	 movs r2,#0
+ 280 0040 1A60     	 str r2,[r3]
+ 281 0042 0433     	 adds r3,r3,#4
+  77:../main.c     **** 	 snprintf(str2, 6,"%f", U_1);
+ 282              	 .loc 1 77 0
+ 283 0044 2B4B     	 ldr r3,.L4
+ 284 0046 D3E90023 	 ldrd r2,[r3]
+ 285 004a CDE90023 	 strd r2,[sp]
+ 286 004e 2A48     	 ldr r0,.L4+4
+ 287 0050 0621     	 movs r1,#6
+ 288 0052 2A4A     	 ldr r2,.L4+8
+ 289 0054 FFF7FEFF 	 bl snprintf
+  78:../main.c     **** 	 strcat(str1,str2);
+ 290              	 .loc 1 78 0
+ 291 0058 3B46     	 mov r3,r7
+ 292 005a 1846     	 mov r0,r3
+ 293 005c 2649     	 ldr r1,.L4+4
+ 294 005e FFF7FEFF 	 bl strcat
+  79:../main.c     **** 
+  80:../main.c     **** 
+  81:../main.c     **** 	 snprintf(str5, 5, "%f", f_1);
+ 295              	 .loc 1 81 0
+ 296 0062 274B     	 ldr r3,.L4+12
+ 297 0064 D3E90023 	 ldrd r2,[r3]
+ 298 0068 CDE90023 	 strd r2,[sp]
+ 299 006c 2548     	 ldr r0,.L4+16
+ 300 006e 0521     	 movs r1,#5
+ 301 0070 224A     	 ldr r2,.L4+8
+ 302 0072 FFF7FEFF 	 bl snprintf
+  82:../main.c     **** 	 snprintf(str7, 5, "%f", f_aktuell);
+ 303              	 .loc 1 82 0
+ 304 0076 244B     	 ldr r3,.L4+20
+ 305 0078 D3E90023 	 ldrd r2,[r3]
+ 306 007c CDE90023 	 strd r2,[sp]
+ 307 0080 2248     	 ldr r0,.L4+24
+ 308 0082 0521     	 movs r1,#5
+ 309 0084 1D4A     	 ldr r2,.L4+8
+ 310 0086 FFF7FEFF 	 bl snprintf
+  83:../main.c     **** 	 strcat(str1,str4);
+ 311              	 .loc 1 83 0
+ 312 008a 3B46     	 mov r3,r7
+ 313 008c 1846     	 mov r0,r3
+ 314 008e 2049     	 ldr r1,.L4+28
+ 315 0090 FFF7FEFF 	 bl strcat
+  84:../main.c     **** 	 strcat(str1,str7);
+ 316              	 .loc 1 84 0
+ 317 0094 3B46     	 mov r3,r7
+ 318 0096 1846     	 mov r0,r3
+ 319 0098 1C49     	 ldr r1,.L4+24
+ 320 009a FFF7FEFF 	 bl strcat
+  85:../main.c     **** 	 strcat(str1,str6);
+ 321              	 .loc 1 85 0
+ 322 009e 3B46     	 mov r3,r7
+ 323 00a0 1846     	 mov r0,r3
+ 324 00a2 1C49     	 ldr r1,.L4+32
+ 325 00a4 FFF7FEFF 	 bl strcat
+  86:../main.c     **** 	 strcat(str1,str5);
+ 326              	 .loc 1 86 0
+ 327 00a8 3B46     	 mov r3,r7
+ 328 00aa 1846     	 mov r0,r3
+ 329 00ac 1549     	 ldr r1,.L4+16
+ 330 00ae FFF7FEFF 	 bl strcat
+  87:../main.c     **** 	 strcat(str1,str_dreh);
+ 331              	 .loc 1 87 0
+ 332 00b2 3B46     	 mov r3,r7
+ 333 00b4 1846     	 mov r0,r3
+ 334 00b6 1849     	 ldr r1,.L4+36
+ 335 00b8 FFF7FEFF 	 bl strcat
+  88:../main.c     **** 	 if(!current_index_status)
+ 336              	 .loc 1 88 0
+ 337 00bc 174B     	 ldr r3,.L4+40
+ 338 00be 1B78     	 ldrb r3,[r3]
+ 339 00c0 83F00103 	 eor r3,r3,#1
+ 340 00c4 DBB2     	 uxtb r3,r3
+ 341 00c6 002B     	 cmp r3,#0
+ 342 00c8 05D0     	 beq .L2
+  89:../main.c     **** 	 {
+  90:../main.c     **** 		 strcat(str1,str_p);
+ 343              	 .loc 1 90 0
+ 344 00ca 3B46     	 mov r3,r7
+ 345 00cc 1846     	 mov r0,r3
+ 346 00ce 1449     	 ldr r1,.L4+44
+ 347 00d0 FFF7FEFF 	 bl strcat
+ 348 00d4 04E0     	 b .L3
+ 349              	.L2:
+  91:../main.c     **** 	 }
+  92:../main.c     **** 	 else
+  93:../main.c     **** 	 {
+  94:../main.c     **** 		 strcat(str1,str_m);
+ 350              	 .loc 1 94 0
+ 351 00d6 3B46     	 mov r3,r7
+ 352 00d8 1846     	 mov r0,r3
+ 353 00da 1249     	 ldr r1,.L4+48
+ 354 00dc FFF7FEFF 	 bl strcat
+ 355              	.L3:
+  95:../main.c     **** 	 }
+  96:../main.c     **** 
+  97:../main.c     **** 	 //strcat(str1,str5);
+  98:../main.c     **** 
+  99:../main.c     **** 	 lcd_home(); // cursor in die 1. Zeile
+ 356              	 .loc 1 99 0
+ 357 00e0 FFF7FEFF 	 bl lcd_home
+ 100:../main.c     **** 	 lcd_string(str1);
+ 358              	 .loc 1 100 0
+ 359 00e4 3B46     	 mov r3,r7
+ 360 00e6 1846     	 mov r0,r3
+ 361 00e8 FFF7FEFF 	 bl lcd_string
+ 101:../main.c     **** 
+ 102:../main.c     **** }
+ 362              	 .loc 1 102 0
+ 363 00ec 2837     	 adds r7,r7,#40
+ 364              	.LCFI3:
+ 365              	 .cfi_def_cfa_offset 8
+ 366 00ee BD46     	 mov sp,r7
+ 367              	.LCFI4:
+ 368              	 .cfi_def_cfa_register 13
+ 369              	 
+ 370 00f0 80BD     	 pop {r7,pc}
+ 371              	.L5:
+ 372 00f2 00BF     	 .align 2
+ 373              	.L4:
+ 374 00f4 00000000 	 .word U_1
+ 375 00f8 00000000 	 .word str2
+ 376 00fc 00000000 	 .word .LC0
+ 377 0100 00000000 	 .word f_1
+ 378 0104 00000000 	 .word str5
+ 379 0108 00000000 	 .word f_aktuell
+ 380 010c 00000000 	 .word str7
+ 381 0110 00000000 	 .word str4
+ 382 0114 00000000 	 .word str6
+ 383 0118 00000000 	 .word str_dreh
+ 384 011c 00000000 	 .word current_index_status
+ 385 0120 00000000 	 .word str_p
+ 386 0124 00000000 	 .word str_m
+ 387              	 .cfi_endproc
+ 388              	.LFE382:
+ 390              	 .global __aeabi_dsub
+ 391              	 .global __aeabi_dcmpge
+ 392              	 .global __aeabi_dcmple
+ 393              	 .global __aeabi_ddiv
+ 394              	 .global __aeabi_dmul
+ 395              	 .global __aeabi_dcmpgt
+ 396              	 .global __aeabi_dadd
+ 397              	 .global __aeabi_d2uiz
+ 398              	 .global __aeabi_dcmpeq
+ 399              	 .global __aeabi_dcmplt
+ 400              	 .section .text.change_frequency,"ax",%progbits
+ 401              	 .align 2
+ 402              	 .global change_frequency
+ 403              	 .thumb
+ 404              	 .thumb_func
+ 406              	change_frequency:
+ 407              	.LFB383:
+ 103:../main.c     **** void change_frequency()
+ 104:../main.c     **** {
+ 408              	 .loc 1 104 0
+ 409              	 .cfi_startproc
+ 410              	 
+ 411              	 
+ 412 0000 B0B5     	 push {r4,r5,r7,lr}
+ 413              	.LCFI5:
+ 414              	 .cfi_def_cfa_offset 16
+ 415              	 .cfi_offset 4,-16
+ 416              	 .cfi_offset 5,-12
+ 417              	 .cfi_offset 7,-8
+ 418              	 .cfi_offset 14,-4
+ 419 0002 00AF     	 add r7,sp,#0
+ 420              	.LCFI6:
+ 421              	 .cfi_def_cfa_register 7
+ 105:../main.c     **** 	 f_diff = f_aktuell-f_1;
+ 422              	 .loc 1 105 0
+ 423 0004 AE4B     	 ldr r3,.L28+24
+ 424 0006 D3E90001 	 ldrd r0,[r3]
+ 425 000a AE4B     	 ldr r3,.L28+28
+ 426 000c D3E90023 	 ldrd r2,[r3]
+ 427 0010 FFF7FEFF 	 bl __aeabi_dsub
+ 428 0014 0246     	 mov r2,r0
+ 429 0016 0B46     	 mov r3,r1
+ 430 0018 AB49     	 ldr r1,.L28+32
+ 431 001a C1E90023 	 strd r2,[r1]
+ 106:../main.c     **** 	 if ((f_diff >= -1) && (f_diff <= 1))
+ 432              	 .loc 1 106 0
+ 433 001e AA4B     	 ldr r3,.L28+32
+ 434 0020 D3E90023 	 ldrd r2,[r3]
+ 435 0024 1046     	 mov r0,r2
+ 436 0026 1946     	 mov r1,r3
+ 437 0028 4FF00002 	 mov r2,#0
+ 438 002c A74B     	 ldr r3,.L28+36
+ 439 002e FFF7FEFF 	 bl __aeabi_dcmpge
+ 440 0032 0346     	 mov r3,r0
+ 441 0034 002B     	 cmp r3,#0
+ 442 0036 41D0     	 beq .L7
+ 443              	 .loc 1 106 0 is_stmt 0 discriminator 1
+ 444 0038 A34B     	 ldr r3,.L28+32
+ 445 003a D3E90023 	 ldrd r2,[r3]
+ 446 003e 1046     	 mov r0,r2
+ 447 0040 1946     	 mov r1,r3
+ 448 0042 4FF00002 	 mov r2,#0
+ 449 0046 A24B     	 ldr r3,.L28+40
+ 450 0048 FFF7FEFF 	 bl __aeabi_dcmple
+ 451 004c 0346     	 mov r3,r0
+ 452 004e 002B     	 cmp r3,#0
+ 453 0050 34D0     	 beq .L7
+ 107:../main.c     **** 	 {
+ 108:../main.c     **** 		 time_sample = 1/f_1 * 1000000 * 100; // frequenz vom sinus * anzahl an werte
+ 454              	 .loc 1 108 0 is_stmt 1
+ 455 0052 9C4B     	 ldr r3,.L28+28
+ 456 0054 D3E90023 	 ldrd r2,[r3]
+ 457 0058 4FF00000 	 mov r0,#0
+ 458 005c 9C49     	 ldr r1,.L28+40
+ 459 005e FFF7FEFF 	 bl __aeabi_ddiv
+ 460 0062 0246     	 mov r2,r0
+ 461 0064 0B46     	 mov r3,r1
+ 462 0066 1046     	 mov r0,r2
+ 463 0068 1946     	 mov r1,r3
+ 464 006a 8FA3     	 adr r3,.L28
+ 465 006c D3E90023 	 ldrd r2,[r3]
+ 466 0070 FFF7FEFF 	 bl __aeabi_dmul
+ 467 0074 0246     	 mov r2,r0
+ 468 0076 0B46     	 mov r3,r1
+ 469 0078 1046     	 mov r0,r2
+ 470 007a 1946     	 mov r1,r3
+ 471 007c 4FF00002 	 mov r2,#0
+ 472 0080 944B     	 ldr r3,.L28+44
+ 473 0082 FFF7FEFF 	 bl __aeabi_dmul
+ 474 0086 0246     	 mov r2,r0
+ 475 0088 0B46     	 mov r3,r1
+ 476 008a 9349     	 ldr r1,.L28+48
+ 477 008c C1E90023 	 strd r2,[r1]
+ 109:../main.c     **** 		 time_sample = time_sample/256;
+ 478              	 .loc 1 109 0
+ 479 0090 914B     	 ldr r3,.L28+48
+ 480 0092 D3E90023 	 ldrd r2,[r3]
+ 481 0096 1046     	 mov r0,r2
+ 482 0098 1946     	 mov r1,r3
+ 483 009a 4FF00002 	 mov r2,#0
+ 484 009e 8F4B     	 ldr r3,.L28+52
+ 485 00a0 FFF7FEFF 	 bl __aeabi_ddiv
+ 486 00a4 0246     	 mov r2,r0
+ 487 00a6 0B46     	 mov r3,r1
+ 488 00a8 8B49     	 ldr r1,.L28+48
+ 489 00aa C1E90023 	 strd r2,[r1]
+ 110:../main.c     **** 		 f_aktuell = f_1;
+ 490              	 .loc 1 110 0
+ 491 00ae 854B     	 ldr r3,.L28+28
+ 492 00b0 D3E90023 	 ldrd r2,[r3]
+ 493 00b4 8249     	 ldr r1,.L28+24
+ 494 00b6 C1E90023 	 strd r2,[r1]
+ 495 00ba 5AE0     	 b .L10
+ 496              	.L7:
+ 111:../main.c     **** 	 }
+ 112:../main.c     **** 	 else
+ 113:../main.c     **** 	 {
+ 114:../main.c     **** 		if(f_diff > 0)
+ 497              	 .loc 1 114 0
+ 498 00bc 824B     	 ldr r3,.L28+32
+ 499 00be D3E90023 	 ldrd r2,[r3]
+ 500 00c2 1046     	 mov r0,r2
+ 501 00c4 1946     	 mov r1,r3
+ 502 00c6 4FF00002 	 mov r2,#0
+ 503 00ca 4FF00003 	 mov r3,#0
+ 504 00ce FFF7FEFF 	 bl __aeabi_dcmpgt
+ 505 00d2 0346     	 mov r3,r0
+ 506 00d4 002B     	 cmp r3,#0
+ 507 00d6 0FD0     	 beq .L26
+ 115:../main.c     **** 		{
+ 116:../main.c     **** 			f_aktuell = f_aktuell - 1;
+ 508              	 .loc 1 116 0
+ 509 00d8 794B     	 ldr r3,.L28+24
+ 510 00da D3E90023 	 ldrd r2,[r3]
+ 511 00de 1046     	 mov r0,r2
+ 512 00e0 1946     	 mov r1,r3
+ 513 00e2 4FF00002 	 mov r2,#0
+ 514 00e6 7A4B     	 ldr r3,.L28+40
+ 515 00e8 FFF7FEFF 	 bl __aeabi_dsub
+ 516 00ec 0246     	 mov r2,r0
+ 517 00ee 0B46     	 mov r3,r1
+ 518 00f0 7349     	 ldr r1,.L28+24
+ 519 00f2 C1E90023 	 strd r2,[r1]
+ 520 00f6 0EE0     	 b .L13
+ 521              	.L26:
+ 117:../main.c     **** 		}
+ 118:../main.c     **** 		else 	// (f_diff < 0)
+ 119:../main.c     **** 		{
+ 120:../main.c     **** 			f_aktuell = f_aktuell + 1;
+ 522              	 .loc 1 120 0
+ 523 00f8 714B     	 ldr r3,.L28+24
+ 524 00fa D3E90023 	 ldrd r2,[r3]
+ 525 00fe 1046     	 mov r0,r2
+ 526 0100 1946     	 mov r1,r3
+ 527 0102 4FF00002 	 mov r2,#0
+ 528 0106 724B     	 ldr r3,.L28+40
+ 529 0108 FFF7FEFF 	 bl __aeabi_dadd
+ 530 010c 0246     	 mov r2,r0
+ 531 010e 0B46     	 mov r3,r1
+ 532 0110 6B49     	 ldr r1,.L28+24
+ 533 0112 C1E90023 	 strd r2,[r1]
+ 534              	.L13:
+ 121:../main.c     **** 		}
+ 122:../main.c     **** 		time_sample = (1/f_aktuell) * 1000000 * 100; // wenn frequenz änderung zu hoch ist wird nur um 1
+ 535              	 .loc 1 122 0
+ 536 0116 6A4B     	 ldr r3,.L28+24
+ 537 0118 D3E90023 	 ldrd r2,[r3]
+ 538 011c 4FF00000 	 mov r0,#0
+ 539 0120 6B49     	 ldr r1,.L28+40
+ 540 0122 FFF7FEFF 	 bl __aeabi_ddiv
+ 541 0126 0246     	 mov r2,r0
+ 542 0128 0B46     	 mov r3,r1
+ 543 012a 1046     	 mov r0,r2
+ 544 012c 1946     	 mov r1,r3
+ 545 012e 5EA3     	 adr r3,.L28
+ 546 0130 D3E90023 	 ldrd r2,[r3]
+ 547 0134 FFF7FEFF 	 bl __aeabi_dmul
+ 548 0138 0246     	 mov r2,r0
+ 549 013a 0B46     	 mov r3,r1
+ 550 013c 1046     	 mov r0,r2
+ 551 013e 1946     	 mov r1,r3
+ 552 0140 4FF00002 	 mov r2,#0
+ 553 0144 634B     	 ldr r3,.L28+44
+ 554 0146 FFF7FEFF 	 bl __aeabi_dmul
+ 555 014a 0246     	 mov r2,r0
+ 556 014c 0B46     	 mov r3,r1
+ 557 014e 6249     	 ldr r1,.L28+48
+ 558 0150 C1E90023 	 strd r2,[r1]
+ 123:../main.c     **** 		time_sample = time_sample/256;
+ 559              	 .loc 1 123 0
+ 560 0154 604B     	 ldr r3,.L28+48
+ 561 0156 D3E90023 	 ldrd r2,[r3]
+ 562 015a 1046     	 mov r0,r2
+ 563 015c 1946     	 mov r1,r3
+ 564 015e 4FF00002 	 mov r2,#0
+ 565 0162 5E4B     	 ldr r3,.L28+52
+ 566 0164 FFF7FEFF 	 bl __aeabi_ddiv
+ 567 0168 0246     	 mov r2,r0
+ 568 016a 0B46     	 mov r3,r1
+ 569 016c 5A49     	 ldr r1,.L28+48
+ 570 016e C1E90023 	 strd r2,[r1]
+ 571              	.L10:
+ 124:../main.c     **** 	  }
+ 125:../main.c     **** 	  TIMER_Stop(&TIMER_1);
+ 572              	 .loc 1 125 0
+ 573 0172 5B48     	 ldr r0,.L28+56
+ 574 0174 FFF7FEFF 	 bl TIMER_Stop
+ 126:../main.c     **** 	  TIMER_SetTimeInterval(&TIMER_1, (uint32_t) time_sample);
+ 575              	 .loc 1 126 0
+ 576 0178 574B     	 ldr r3,.L28+48
+ 577 017a D3E90023 	 ldrd r2,[r3]
+ 578 017e 1046     	 mov r0,r2
+ 579 0180 1946     	 mov r1,r3
+ 580 0182 FFF7FEFF 	 bl __aeabi_d2uiz
+ 581 0186 0346     	 mov r3,r0
+ 582 0188 5548     	 ldr r0,.L28+56
+ 583 018a 1946     	 mov r1,r3
+ 584 018c FFF7FEFF 	 bl TIMER_SetTimeInterval
+ 127:../main.c     **** 	  TIMER_Start(&TIMER_1);
+ 585              	 .loc 1 127 0
+ 586 0190 5348     	 ldr r0,.L28+56
+ 587 0192 FFF7FEFF 	 bl TIMER_Start
+ 128:../main.c     **** 
+ 129:../main.c     **** 	  if(pin_status_bremsen && f_1 == f_aktuell)
+ 588              	 .loc 1 129 0
+ 589 0196 534B     	 ldr r3,.L28+60
+ 590 0198 1B78     	 ldrb r3,[r3]
+ 591 019a 002B     	 cmp r3,#0
+ 592 019c 39D0     	 beq .L14
+ 593              	 .loc 1 129 0 is_stmt 0 discriminator 1
+ 594 019e 494B     	 ldr r3,.L28+28
+ 595 01a0 D3E90001 	 ldrd r0,[r3]
+ 596 01a4 464B     	 ldr r3,.L28+24
+ 597 01a6 D3E90023 	 ldrd r2,[r3]
+ 598 01aa FFF7FEFF 	 bl __aeabi_dcmpeq
+ 599 01ae 0346     	 mov r3,r0
+ 600 01b0 002B     	 cmp r3,#0
+ 601 01b2 2ED0     	 beq .L14
+ 130:../main.c     **** 	  {
+ 131:../main.c     **** 		  //TIMER_Stop(&TIMER_0);
+ 132:../main.c     **** 		  current_index_status = !current_index_status;
+ 602              	 .loc 1 132 0 is_stmt 1
+ 603 01b4 4C4B     	 ldr r3,.L28+64
+ 604 01b6 1B78     	 ldrb r3,[r3]
+ 605 01b8 002B     	 cmp r3,#0
+ 606 01ba 14BF     	 ite ne
+ 607 01bc 0123     	 movne r3,#1
+ 608 01be 0023     	 moveq r3,#0
+ 609 01c0 DBB2     	 uxtb r3,r3
+ 610 01c2 83F00103 	 eor r3,r3,#1
+ 611 01c6 DBB2     	 uxtb r3,r3
+ 612 01c8 03F00103 	 and r3,r3,#1
+ 613 01cc DAB2     	 uxtb r2,r3
+ 614 01ce 464B     	 ldr r3,.L28+64
+ 615 01d0 1A70     	 strb r2,[r3]
+ 133:../main.c     **** 		  if(current_index_status)
+ 616              	 .loc 1 133 0
+ 617 01d2 454B     	 ldr r3,.L28+64
+ 618 01d4 1B78     	 ldrb r3,[r3]
+ 619 01d6 002B     	 cmp r3,#0
+ 620 01d8 0CD0     	 beq .L16
+ 134:../main.c     **** 		  {
+ 135:../main.c     **** 			  index_count_2 = index_count_2 - 86;
+ 621              	 .loc 1 135 0
+ 622 01da 444B     	 ldr r3,.L28+68
+ 623 01dc 1B78     	 ldrb r3,[r3]
+ 624 01de 563B     	 subs r3,r3,#86
+ 625 01e0 DAB2     	 uxtb r2,r3
+ 626 01e2 424B     	 ldr r3,.L28+68
+ 627 01e4 1A70     	 strb r2,[r3]
+ 136:../main.c     **** 			  index_count_3 = index_count_3 + 86;
+ 628              	 .loc 1 136 0
+ 629 01e6 424B     	 ldr r3,.L28+72
+ 630 01e8 1B78     	 ldrb r3,[r3]
+ 631 01ea 5633     	 adds r3,r3,#86
+ 632 01ec DAB2     	 uxtb r2,r3
+ 633 01ee 404B     	 ldr r3,.L28+72
+ 634 01f0 1A70     	 strb r2,[r3]
+ 635 01f2 0BE0     	 b .L17
+ 636              	.L16:
+ 137:../main.c     **** 		  }
+ 138:../main.c     **** 		  else
+ 139:../main.c     **** 		  {
+ 140:../main.c     **** 			  index_count_2 = index_count_2 + 86;
+ 637              	 .loc 1 140 0
+ 638 01f4 3D4B     	 ldr r3,.L28+68
+ 639 01f6 1B78     	 ldrb r3,[r3]
+ 640 01f8 5633     	 adds r3,r3,#86
+ 641 01fa DAB2     	 uxtb r2,r3
+ 642 01fc 3B4B     	 ldr r3,.L28+68
+ 643 01fe 1A70     	 strb r2,[r3]
+ 141:../main.c     **** 			  index_count_3 = index_count_3 - 86;
+ 644              	 .loc 1 141 0
+ 645 0200 3B4B     	 ldr r3,.L28+72
+ 646 0202 1B78     	 ldrb r3,[r3]
+ 647 0204 563B     	 subs r3,r3,#86
+ 648 0206 DAB2     	 uxtb r2,r3
+ 649 0208 394B     	 ldr r3,.L28+72
+ 650 020a 1A70     	 strb r2,[r3]
+ 651              	.L17:
+ 142:../main.c     **** 		  }
+ 143:../main.c     **** 		  pin_status_bremsen = false;
+ 652              	 .loc 1 143 0
+ 653 020c 354B     	 ldr r3,.L28+60
+ 654 020e 0022     	 movs r2,#0
+ 655 0210 1A70     	 strb r2,[r3]
+ 656              	.L14:
+ 144:../main.c     **** 		  //Timer_Start(&TIMER_0);
+ 145:../main.c     **** 	  }
+ 146:../main.c     **** 
+ 147:../main.c     **** 	  if (f_aktuell < 50)
+ 657              	 .loc 1 147 0
+ 658 0212 2B4B     	 ldr r3,.L28+24
+ 659 0214 D3E90023 	 ldrd r2,[r3]
+ 660 0218 1046     	 mov r0,r2
+ 661 021a 1946     	 mov r1,r3
+ 662 021c 4FF00002 	 mov r2,#0
+ 663 0220 344B     	 ldr r3,.L28+76
+ 664 0222 FFF7FEFF 	 bl __aeabi_dcmplt
+ 665 0226 0346     	 mov r3,r0
+ 666 0228 002B     	 cmp r3,#0
+ 667 022a 35D0     	 beq .L27
+ 148:../main.c     **** 	  {
+ 149:../main.c     **** 	  	U_1 = (U_N*0.9/50)*(f_aktuell) + U_N*0.1;
+ 668              	 .loc 1 149 0
+ 669 022c 324B     	 ldr r3,.L28+80
+ 670 022e D3E90023 	 ldrd r2,[r3]
+ 671 0232 1046     	 mov r0,r2
+ 672 0234 1946     	 mov r1,r3
+ 673 0236 1EA3     	 adr r3,.L28+8
+ 674 0238 D3E90023 	 ldrd r2,[r3]
+ 675 023c FFF7FEFF 	 bl __aeabi_dmul
+ 676 0240 0246     	 mov r2,r0
+ 677 0242 0B46     	 mov r3,r1
+ 678 0244 1046     	 mov r0,r2
+ 679 0246 1946     	 mov r1,r3
+ 680 0248 4FF00002 	 mov r2,#0
+ 681 024c 294B     	 ldr r3,.L28+76
+ 682 024e FFF7FEFF 	 bl __aeabi_ddiv
+ 683 0252 0246     	 mov r2,r0
+ 684 0254 0B46     	 mov r3,r1
+ 685 0256 1046     	 mov r0,r2
+ 686 0258 1946     	 mov r1,r3
+ 687 025a 194B     	 ldr r3,.L28+24
+ 688 025c D3E90023 	 ldrd r2,[r3]
+ 689 0260 FFF7FEFF 	 bl __aeabi_dmul
+ 690 0264 0246     	 mov r2,r0
+ 691 0266 0B46     	 mov r3,r1
+ 692 0268 1446     	 mov r4,r2
+ 693 026a 1D46     	 mov r5,r3
+ 694 026c 224B     	 ldr r3,.L28+80
+ 695 026e D3E90023 	 ldrd r2,[r3]
+ 696 0272 1046     	 mov r0,r2
+ 697 0274 1946     	 mov r1,r3
+ 698 0276 10A3     	 adr r3,.L28+16
+ 699 0278 D3E90023 	 ldrd r2,[r3]
+ 700 027c FFF7FEFF 	 bl __aeabi_dmul
+ 701 0280 0246     	 mov r2,r0
+ 702 0282 0B46     	 mov r3,r1
+ 703 0284 2046     	 mov r0,r4
+ 704 0286 2946     	 mov r1,r5
+ 705 0288 FFF7FEFF 	 bl __aeabi_dadd
+ 706 028c 0246     	 mov r2,r0
+ 707 028e 0B46     	 mov r3,r1
+ 708 0290 1A49     	 ldr r1,.L28+84
+ 709 0292 C1E90023 	 strd r2,[r1]
+ 710 0296 05E0     	 b .L6
+ 711              	.L27:
+ 150:../main.c     **** 	  }
+ 151:../main.c     **** 	  else
+ 152:../main.c     **** 	  {
+ 153:../main.c     **** 		U_1 = 120;
+ 712              	 .loc 1 153 0
+ 713 0298 1849     	 ldr r1,.L28+84
+ 714 029a 4FF00002 	 mov r2,#0
+ 715 029e 184B     	 ldr r3,.L28+88
+ 716 02a0 C1E90023 	 strd r2,[r1]
+ 717              	.L6:
+ 154:../main.c     **** 	  }
+ 155:../main.c     **** 
+ 156:../main.c     **** 	  //write_display();
+ 157:../main.c     **** }
+ 718              	 .loc 1 157 0
+ 719 02a4 B0BD     	 pop {r4,r5,r7,pc}
+ 720              	.L29:
+ 721 02a6 00BF     	 .align 3
+ 722              	.L28:
+ 723 02a8 00000000 	 .word 0
+ 724 02ac 80842E41 	 .word 1093567616
+ 725 02b0 CDCCCCCC 	 .word -858993459
+ 726 02b4 CCCCEC3F 	 .word 1072483532
+ 727 02b8 9A999999 	 .word -1717986918
+ 728 02bc 9999B93F 	 .word 1069128089
+ 729 02c0 00000000 	 .word f_aktuell
+ 730 02c4 00000000 	 .word f_1
+ 731 02c8 00000000 	 .word f_diff
+ 732 02cc 0000F0BF 	 .word -1074790400
+ 733 02d0 0000F03F 	 .word 1072693248
+ 734 02d4 00005940 	 .word 1079574528
+ 735 02d8 00000000 	 .word time_sample
+ 736 02dc 00007040 	 .word 1081081856
+ 737 02e0 00000000 	 .word TIMER_1
+ 738 02e4 00000000 	 .word pin_status_bremsen
+ 739 02e8 00000000 	 .word current_index_status
+ 740 02ec 00000000 	 .word index_count_2
+ 741 02f0 00000000 	 .word index_count_3
+ 742 02f4 00004940 	 .word 1078525952
+ 743 02f8 00000000 	 .word U_N
+ 744 02fc 00000000 	 .word U_1
+ 745 0300 00005E40 	 .word 1079902208
+ 746              	 .cfi_endproc
+ 747              	.LFE383:
+ 749              	 .global __aeabi_i2d
+ 750 0304 AFF30080 	 .section .text.VADC0_C0_2_IRQHandler,"ax",%progbits
+ 751              	 .align 2
+ 752              	 .global VADC0_C0_2_IRQHandler
+ 753              	 .thumb
+ 754              	 .thumb_func
+ 756              	VADC0_C0_2_IRQHandler:
+ 757              	.LFB384:
+ 158:../main.c     **** 
+ 159:../main.c     **** void Adc_Measurement_Handler()
+ 160:../main.c     **** {
+ 758              	 .loc 1 160 0
+ 759              	 .cfi_startproc
+ 760              	 
+ 761              	 
+ 762 0000 80B5     	 push {r7,lr}
+ 763              	.LCFI7:
+ 764              	 .cfi_def_cfa_offset 8
+ 765              	 .cfi_offset 7,-8
+ 766              	 .cfi_offset 14,-4
+ 767 0002 00AF     	 add r7,sp,#0
+ 768              	.LCFI8:
+ 769              	 .cfi_def_cfa_register 7
+ 161:../main.c     **** #if(UC_SERIES != XMC11)
+ 162:../main.c     **** 
+ 163:../main.c     ****   result = ADC_MEASUREMENT_GetResult(&ADC_MEASUREMENT_Channel_A);
+ 770              	 .loc 1 163 0
+ 771 0004 1D48     	 ldr r0,.L34
+ 772 0006 FFF7FEFF 	 bl ADC_MEASUREMENT_GetResult
+ 773 000a 0346     	 mov r3,r0
+ 774 000c 1A46     	 mov r2,r3
+ 775 000e 1C4B     	 ldr r3,.L34+4
+ 776 0010 1A80     	 strh r2,[r3]
+ 164:../main.c     **** #else
+ 165:../main.c     ****   result = ADC_MEASUREMENT_GetGlobalResult();
+ 166:../main.c     **** #endif
+ 167:../main.c     ****   	 //result = 100;
+ 168:../main.c     ****   	 if(pin_status1)
+ 777              	 .loc 1 168 0
+ 778 0012 1C4B     	 ldr r3,.L34+8
+ 779 0014 1B78     	 ldrb r3,[r3]
+ 780 0016 002B     	 cmp r3,#0
+ 781 0018 1CD0     	 beq .L31
+ 169:../main.c     ****   	 {
+ 170:../main.c     ****   		 f_1 = (99.5/1024) * result + 0.5;  // frequenz start bei 0.5Hz
+ 782              	 .loc 1 170 0
+ 783 001a 194B     	 ldr r3,.L34+4
+ 784 001c 1B88     	 ldrh r3,[r3]
+ 785 001e 1846     	 mov r0,r3
+ 786 0020 FFF7FEFF 	 bl __aeabi_i2d
+ 787 0024 0246     	 mov r2,r0
+ 788 0026 0B46     	 mov r3,r1
+ 789 0028 1046     	 mov r0,r2
+ 790 002a 1946     	 mov r1,r3
+ 791 002c 4FF00002 	 mov r2,#0
+ 792 0030 154B     	 ldr r3,.L34+12
+ 793 0032 FFF7FEFF 	 bl __aeabi_dmul
+ 794 0036 0246     	 mov r2,r0
+ 795 0038 0B46     	 mov r3,r1
+ 796 003a 1046     	 mov r0,r2
+ 797 003c 1946     	 mov r1,r3
+ 798 003e 4FF00002 	 mov r2,#0
+ 799 0042 124B     	 ldr r3,.L34+16
+ 800 0044 FFF7FEFF 	 bl __aeabi_dadd
+ 801 0048 0246     	 mov r2,r0
+ 802 004a 0B46     	 mov r3,r1
+ 803 004c 1049     	 ldr r1,.L34+20
+ 804 004e C1E90023 	 strd r2,[r1]
+ 805 0052 05E0     	 b .L32
+ 806              	.L31:
+ 171:../main.c     ****   	 }
+ 172:../main.c     ****   	 else
+ 173:../main.c     ****   	 {
+ 174:../main.c     ****   		 f_1 = 0.5;
+ 807              	 .loc 1 174 0
+ 808 0054 0E49     	 ldr r1,.L34+20
+ 809 0056 4FF00002 	 mov r2,#0
+ 810 005a 0C4B     	 ldr r3,.L34+16
+ 811 005c C1E90023 	 strd r2,[r1]
+ 812              	.L32:
+ 175:../main.c     ****   	 }
+ 176:../main.c     **** 
+ 177:../main.c     ****   	 if(pin_status_bremsen)
+ 813              	 .loc 1 177 0
+ 814 0060 0C4B     	 ldr r3,.L34+24
+ 815 0062 1B78     	 ldrb r3,[r3]
+ 816 0064 002B     	 cmp r3,#0
+ 817 0066 05D0     	 beq .L33
+ 178:../main.c     ****   	 {
+ 179:../main.c     ****   		 f_1 = 0.5;
+ 818              	 .loc 1 179 0
+ 819 0068 0949     	 ldr r1,.L34+20
+ 820 006a 4FF00002 	 mov r2,#0
+ 821 006e 074B     	 ldr r3,.L34+16
+ 822 0070 C1E90023 	 strd r2,[r1]
+ 823              	.L33:
+ 180:../main.c     ****   	 }
+ 181:../main.c     ****      change_frequency();
+ 824              	 .loc 1 181 0
+ 825 0074 FFF7FEFF 	 bl change_frequency
+ 182:../main.c     **** }
+ 826              	 .loc 1 182 0
+ 827 0078 80BD     	 pop {r7,pc}
+ 828              	.L35:
+ 829 007a 00BF     	 .align 2
+ 830              	.L34:
+ 831 007c 00000000 	 .word ADC_MEASUREMENT_Channel_A_handle
+ 832 0080 00000000 	 .word result
+ 833 0084 00000000 	 .word pin_status1
+ 834 0088 00E0B83F 	 .word 1069080576
+ 835 008c 0000E03F 	 .word 1071644672
+ 836 0090 00000000 	 .word f_1
+ 837 0094 00000000 	 .word pin_status_bremsen
+ 838              	 .cfi_endproc
+ 839              	.LFE384:
+ 841              	 .global p1
+ 842              	 .section .bss.p1,"aw",%nobits
+ 843              	 .align 3
+ 846              	p1:
+ 847 0000 00000000 	 .space 8
+ 847      00000000 
+ 848              	 .global p2
+ 849              	 .section .bss.p2,"aw",%nobits
+ 850              	 .align 3
+ 853              	p2:
+ 854 0000 00000000 	 .space 8
+ 854      00000000 
+ 855              	 .global p3
+ 856              	 .section .bss.p3,"aw",%nobits
+ 857              	 .align 3
+ 860              	p3:
+ 861 0000 00000000 	 .space 8
+ 861      00000000 
+ 862              	 .section .text.sinus_dreieck_vergleich,"ax",%progbits
+ 863              	 .align 2
+ 864              	 .global sinus_dreieck_vergleich
+ 865              	 .thumb
+ 866              	 .thumb_func
+ 868              	sinus_dreieck_vergleich:
+ 869              	.LFB385:
+ 183:../main.c     **** 
+ 184:../main.c     **** double p1 = 0;
+ 185:../main.c     **** double p2 = 0;
+ 186:../main.c     **** double p3 = 0;
+ 187:../main.c     **** 
+ 188:../main.c     **** void sinus_dreieck_vergleich()
+ 189:../main.c     **** {
+ 870              	 .loc 1 189 0
+ 871              	 .cfi_startproc
+ 872              	 
+ 873              	 
+ 874 0000 80B5     	 push {r7,lr}
+ 875              	.LCFI9:
+ 876              	 .cfi_def_cfa_offset 8
+ 877              	 .cfi_offset 7,-8
+ 878              	 .cfi_offset 14,-4
+ 879 0002 00AF     	 add r7,sp,#0
+ 880              	.LCFI10:
+ 881              	 .cfi_def_cfa_register 7
+ 190:../main.c     **** 	p1 = ((U_u*U_1)/120 + 1)*10000/2;
+ 882              	 .loc 1 190 0
+ 883 0004 764B     	 ldr r3,.L39+8
+ 884 0006 D3E90001 	 ldrd r0,[r3]
+ 885 000a 764B     	 ldr r3,.L39+12
+ 886 000c D3E90023 	 ldrd r2,[r3]
+ 887 0010 FFF7FEFF 	 bl __aeabi_dmul
+ 888 0014 0246     	 mov r2,r0
+ 889 0016 0B46     	 mov r3,r1
+ 890 0018 1046     	 mov r0,r2
+ 891 001a 1946     	 mov r1,r3
+ 892 001c 4FF00002 	 mov r2,#0
+ 893 0020 714B     	 ldr r3,.L39+16
+ 894 0022 FFF7FEFF 	 bl __aeabi_ddiv
+ 895 0026 0246     	 mov r2,r0
+ 896 0028 0B46     	 mov r3,r1
+ 897 002a 1046     	 mov r0,r2
+ 898 002c 1946     	 mov r1,r3
+ 899 002e 4FF00002 	 mov r2,#0
+ 900 0032 6E4B     	 ldr r3,.L39+20
+ 901 0034 FFF7FEFF 	 bl __aeabi_dadd
+ 902 0038 0246     	 mov r2,r0
+ 903 003a 0B46     	 mov r3,r1
+ 904 003c 1046     	 mov r0,r2
+ 905 003e 1946     	 mov r1,r3
+ 906 0040 65A3     	 adr r3,.L39
+ 907 0042 D3E90023 	 ldrd r2,[r3]
+ 908 0046 FFF7FEFF 	 bl __aeabi_dmul
+ 909 004a 0246     	 mov r2,r0
+ 910 004c 0B46     	 mov r3,r1
+ 911 004e 1046     	 mov r0,r2
+ 912 0050 1946     	 mov r1,r3
+ 913 0052 4FF00002 	 mov r2,#0
+ 914 0056 4FF08043 	 mov r3,#1073741824
+ 915 005a FFF7FEFF 	 bl __aeabi_ddiv
+ 916 005e 0246     	 mov r2,r0
+ 917 0060 0B46     	 mov r3,r1
+ 918 0062 6349     	 ldr r1,.L39+24
+ 919 0064 C1E90023 	 strd r2,[r1]
+ 191:../main.c     **** 	p2 = ((U_v*U_1)/120 + 1)*10000/2;
+ 920              	 .loc 1 191 0
+ 921 0068 624B     	 ldr r3,.L39+28
+ 922 006a D3E90001 	 ldrd r0,[r3]
+ 923 006e 5D4B     	 ldr r3,.L39+12
+ 924 0070 D3E90023 	 ldrd r2,[r3]
+ 925 0074 FFF7FEFF 	 bl __aeabi_dmul
+ 926 0078 0246     	 mov r2,r0
+ 927 007a 0B46     	 mov r3,r1
+ 928 007c 1046     	 mov r0,r2
+ 929 007e 1946     	 mov r1,r3
+ 930 0080 4FF00002 	 mov r2,#0
+ 931 0084 584B     	 ldr r3,.L39+16
+ 932 0086 FFF7FEFF 	 bl __aeabi_ddiv
+ 933 008a 0246     	 mov r2,r0
+ 934 008c 0B46     	 mov r3,r1
+ 935 008e 1046     	 mov r0,r2
+ 936 0090 1946     	 mov r1,r3
+ 937 0092 4FF00002 	 mov r2,#0
+ 938 0096 554B     	 ldr r3,.L39+20
+ 939 0098 FFF7FEFF 	 bl __aeabi_dadd
+ 940 009c 0246     	 mov r2,r0
+ 941 009e 0B46     	 mov r3,r1
+ 942 00a0 1046     	 mov r0,r2
+ 943 00a2 1946     	 mov r1,r3
+ 944 00a4 4CA3     	 adr r3,.L39
+ 945 00a6 D3E90023 	 ldrd r2,[r3]
+ 946 00aa FFF7FEFF 	 bl __aeabi_dmul
+ 947 00ae 0246     	 mov r2,r0
+ 948 00b0 0B46     	 mov r3,r1
+ 949 00b2 1046     	 mov r0,r2
+ 950 00b4 1946     	 mov r1,r3
+ 951 00b6 4FF00002 	 mov r2,#0
+ 952 00ba 4FF08043 	 mov r3,#1073741824
+ 953 00be FFF7FEFF 	 bl __aeabi_ddiv
+ 954 00c2 0246     	 mov r2,r0
+ 955 00c4 0B46     	 mov r3,r1
+ 956 00c6 4C49     	 ldr r1,.L39+32
+ 957 00c8 C1E90023 	 strd r2,[r1]
+ 192:../main.c     **** 	p3 = ((U_w*U_1)/120 + 1)*10000/2;
+ 958              	 .loc 1 192 0
+ 959 00cc 4B4B     	 ldr r3,.L39+36
+ 960 00ce D3E90001 	 ldrd r0,[r3]
+ 961 00d2 444B     	 ldr r3,.L39+12
+ 962 00d4 D3E90023 	 ldrd r2,[r3]
+ 963 00d8 FFF7FEFF 	 bl __aeabi_dmul
+ 964 00dc 0246     	 mov r2,r0
+ 965 00de 0B46     	 mov r3,r1
+ 966 00e0 1046     	 mov r0,r2
+ 967 00e2 1946     	 mov r1,r3
+ 968 00e4 4FF00002 	 mov r2,#0
+ 969 00e8 3F4B     	 ldr r3,.L39+16
+ 970 00ea FFF7FEFF 	 bl __aeabi_ddiv
+ 971 00ee 0246     	 mov r2,r0
+ 972 00f0 0B46     	 mov r3,r1
+ 973 00f2 1046     	 mov r0,r2
+ 974 00f4 1946     	 mov r1,r3
+ 975 00f6 4FF00002 	 mov r2,#0
+ 976 00fa 3C4B     	 ldr r3,.L39+20
+ 977 00fc FFF7FEFF 	 bl __aeabi_dadd
+ 978 0100 0246     	 mov r2,r0
+ 979 0102 0B46     	 mov r3,r1
+ 980 0104 1046     	 mov r0,r2
+ 981 0106 1946     	 mov r1,r3
+ 982 0108 33A3     	 adr r3,.L39
+ 983 010a D3E90023 	 ldrd r2,[r3]
+ 984 010e FFF7FEFF 	 bl __aeabi_dmul
+ 985 0112 0246     	 mov r2,r0
+ 986 0114 0B46     	 mov r3,r1
+ 987 0116 1046     	 mov r0,r2
+ 988 0118 1946     	 mov r1,r3
+ 989 011a 4FF00002 	 mov r2,#0
+ 990 011e 4FF08043 	 mov r3,#1073741824
+ 991 0122 FFF7FEFF 	 bl __aeabi_ddiv
+ 992 0126 0246     	 mov r2,r0
+ 993 0128 0B46     	 mov r3,r1
+ 994 012a 3549     	 ldr r1,.L39+40
+ 995 012c C1E90023 	 strd r2,[r1]
+ 193:../main.c     **** 
+ 194:../main.c     **** 	//PWM_CCU8_STATUS(&PWM_CCU8_0);
+ 195:../main.c     **** 
+ 196:../main.c     **** 	//DC_Bremsen
+ 197:../main.c     **** 	  if (!pin_status2)
+ 996              	 .loc 1 197 0
+ 997 0130 344B     	 ldr r3,.L39+44
+ 998 0132 1B78     	 ldrb r3,[r3]
+ 999 0134 83F00103 	 eor r3,r3,#1
+ 1000 0138 DBB2     	 uxtb r3,r3
+ 1001 013a 002B     	 cmp r3,#0
+ 1002 013c 27D0     	 beq .L37
+ 198:../main.c     **** 	  {
+ 199:../main.c     **** 		  // ganz normaler Betrieb
+ 200:../main.c     **** 		PWM_CCU8_SetDutyCycleSymmetric(&PWM_CCU8_0, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, (uint32_t) p1);
+ 1003              	 .loc 1 200 0
+ 1004 013e 2C4B     	 ldr r3,.L39+24
+ 1005 0140 D3E90023 	 ldrd r2,[r3]
+ 1006 0144 1046     	 mov r0,r2
+ 1007 0146 1946     	 mov r1,r3
+ 1008 0148 FFF7FEFF 	 bl __aeabi_d2uiz
+ 1009 014c 0346     	 mov r3,r0
+ 1010 014e 2E48     	 ldr r0,.L39+48
+ 1011 0150 0021     	 movs r1,#0
+ 1012 0152 1A46     	 mov r2,r3
+ 1013 0154 FFF7FEFF 	 bl PWM_CCU8_SetDutyCycleSymmetric
+ 201:../main.c     **** 		PWM_CCU8_SetDutyCycleSymmetric(&PWM_CCU8_1, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, (uint32_t) p2);
+ 1014              	 .loc 1 201 0
+ 1015 0158 274B     	 ldr r3,.L39+32
+ 1016 015a D3E90023 	 ldrd r2,[r3]
+ 1017 015e 1046     	 mov r0,r2
+ 1018 0160 1946     	 mov r1,r3
+ 1019 0162 FFF7FEFF 	 bl __aeabi_d2uiz
+ 1020 0166 0346     	 mov r3,r0
+ 1021 0168 2848     	 ldr r0,.L39+52
+ 1022 016a 0021     	 movs r1,#0
+ 1023 016c 1A46     	 mov r2,r3
+ 1024 016e FFF7FEFF 	 bl PWM_CCU8_SetDutyCycleSymmetric
+ 202:../main.c     **** 		PWM_CCU8_SetDutyCycleSymmetric(&PWM_CCU8_2, XMC_CCU8_SLICE_COMPARE_CHANNEL_1, (uint32_t) p3);
+ 1025              	 .loc 1 202 0
+ 1026 0172 234B     	 ldr r3,.L39+40
+ 1027 0174 D3E90023 	 ldrd r2,[r3]
+ 1028 0178 1046     	 mov r0,r2
+ 1029 017a 1946     	 mov r1,r3
+ 1030 017c FFF7FEFF 	 bl __aeabi_d2uiz
+ 1031 0180 0346     	 mov r3,r0
+ 1032 0182 2348     	 ldr r0,.L39+56
+ 1033 0184 0021     	 movs r1,#0
+ 1034 0186 1A46     	 mov r2,r3
+ 1035 0188 FFF7FEFF 	 bl PWM_CCU8_SetDutyCycleSymmetric
+ 1036 018c 23E0     	 b .L36
+ 1037              	.L37:
+ 203:../main.c     **** 		 /* PWM_CCU8_Start(&PWM_CCU8_0);
+ 204:../main.c     **** 		  PWM_CCU8_SetFreqAndDutyCycleSymmetric(&PWM_CCU8_0, f, d1,0);
+ 205:../main.c     **** 		  PWM_CCU8_Start(&PWM_CCU8_1);
+ 206:../main.c     **** 		  PWM_CCU8_SetFreqAndDutyCycleSymmetric(&PWM_CCU8_1, f, d2,0);
+ 207:../main.c     **** 		  PWM_CCU8_Start(&PWM_CCU8_2);
+ 208:../main.c     **** 		  PWM_CCU8_SetFreqAndDutyCycleSymmetric(&PWM_CCU8_2, f, d3,0);
+ 209:../main.c     **** 		  */
+ 210:../main.c     **** 	  }
+ 211:../main.c     **** 	  else
+ 212:../main.c     **** 	  {
+ 213:../main.c     **** 		//DC_Bremsen
+ 214:../main.c     **** 		  //PWM_Start(&PWM_CCU8_0);
+ 215:../main.c     **** 		  PWM_CCU8_SetFreqAndDutyCycleSymmetric(&PWM_CCU8_0, f, 10000,0);
+ 1038              	 .loc 1 215 0
+ 1039 018e 214B     	 ldr r3,.L39+60
+ 1040 0190 1B68     	 ldr r3,[r3]
+ 1041 0192 1D48     	 ldr r0,.L39+48
+ 1042 0194 1946     	 mov r1,r3
+ 1043 0196 42F21072 	 movw r2,#10000
+ 1044 019a 0023     	 movs r3,#0
+ 1045 019c FFF7FEFF 	 bl PWM_CCU8_SetFreqAndDutyCycleSymmetric
+ 216:../main.c     **** 		  //PWM_Start(&PWM_CCU8_1);
+ 217:../main.c     **** 		  PWM_CCU8_SetFreqAndDutyCycleSymmetric(&PWM_CCU8_1, f, d2_DC,0);
+ 1046              	 .loc 1 217 0
+ 1047 01a0 1C4B     	 ldr r3,.L39+60
+ 1048 01a2 1A68     	 ldr r2,[r3]
+ 1049 01a4 1C4B     	 ldr r3,.L39+64
+ 1050 01a6 1B68     	 ldr r3,[r3]
+ 1051 01a8 1848     	 ldr r0,.L39+52
+ 1052 01aa 1146     	 mov r1,r2
+ 1053 01ac 1A46     	 mov r2,r3
+ 1054 01ae 0023     	 movs r3,#0
+ 1055 01b0 FFF7FEFF 	 bl PWM_CCU8_SetFreqAndDutyCycleSymmetric
+ 218:../main.c     **** 		 // PWM_Start(&PWM_CCU8_2);
+ 219:../main.c     **** 		  PWM_CCU8_SetFreqAndDutyCycleSymmetric(&PWM_CCU8_2, f, d3_DC,0);
+ 1056              	 .loc 1 219 0
+ 1057 01b4 174B     	 ldr r3,.L39+60
+ 1058 01b6 1A68     	 ldr r2,[r3]
+ 1059 01b8 184B     	 ldr r3,.L39+68
+ 1060 01ba 1B68     	 ldr r3,[r3]
+ 1061 01bc 1448     	 ldr r0,.L39+56
+ 1062 01be 1146     	 mov r1,r2
+ 1063 01c0 1A46     	 mov r2,r3
+ 1064 01c2 0023     	 movs r3,#0
+ 1065 01c4 FFF7FEFF 	 bl PWM_CCU8_SetFreqAndDutyCycleSymmetric
+ 220:../main.c     **** 
+ 221:../main.c     **** 		  f_aktuell = 0;
+ 1066              	 .loc 1 221 0
+ 1067 01c8 1549     	 ldr r1,.L39+72
+ 1068 01ca 4FF00002 	 mov r2,#0
+ 1069 01ce 4FF00003 	 mov r3,#0
+ 1070 01d2 C1E90023 	 strd r2,[r1]
+ 1071              	.L36:
+ 222:../main.c     **** 
+ 223:../main.c     **** 	  }
+ 224:../main.c     **** 
+ 225:../main.c     **** 
+ 226:../main.c     **** 
+ 227:../main.c     **** 	/*PWM_CCU8_Start(&PWM_CCU8_0);
+ 228:../main.c     **** 	PWM_CCU8_Start(&PWM_CCU8_1);
+ 229:../main.c     **** 	PWM_CCU8_Start(&PWM_CCU8_2);
+ 230:../main.c     **** */
+ 231:../main.c     **** }
+ 1072              	 .loc 1 231 0
+ 1073 01d6 80BD     	 pop {r7,pc}
+ 1074              	.L40:
+ 1075              	 .align 3
+ 1076              	.L39:
+ 1077 01d8 00000000 	 .word 0
+ 1078 01dc 0088C340 	 .word 1086556160
+ 1079 01e0 00000000 	 .word U_u
+ 1080 01e4 00000000 	 .word U_1
+ 1081 01e8 00005E40 	 .word 1079902208
+ 1082 01ec 0000F03F 	 .word 1072693248
+ 1083 01f0 00000000 	 .word p1
+ 1084 01f4 00000000 	 .word U_v
+ 1085 01f8 00000000 	 .word p2
+ 1086 01fc 00000000 	 .word U_w
+ 1087 0200 00000000 	 .word p3
+ 1088 0204 00000000 	 .word pin_status2
+ 1089 0208 00000000 	 .word PWM_CCU8_0
+ 1090 020c 00000000 	 .word PWM_CCU8_1
+ 1091 0210 00000000 	 .word PWM_CCU8_2
+ 1092 0214 00000000 	 .word f
+ 1093 0218 00000000 	 .word d2_DC
+ 1094 021c 00000000 	 .word d3_DC
+ 1095 0220 00000000 	 .word f_aktuell
+ 1096              	 .cfi_endproc
+ 1097              	.LFE385:
+ 1099 0224 AFF30080 	 .section .text.CCU43_1_IRQHandler,"ax",%progbits
+ 1100              	 .align 2
+ 1101              	 .global CCU43_1_IRQHandler
+ 1102              	 .thumb
+ 1103              	 .thumb_func
+ 1105              	CCU43_1_IRQHandler:
+ 1106              	.LFB386:
+ 232:../main.c     **** 
+ 233:../main.c     **** 
+ 234:../main.c     **** void find_3phase_index()
+ 235:../main.c     **** {
+ 1107              	 .loc 1 235 0
+ 1108              	 .cfi_startproc
+ 1109              	 
+ 1110              	 
+ 1111 0000 80B5     	 push {r7,lr}
+ 1112              	.LCFI11:
+ 1113              	 .cfi_def_cfa_offset 8
+ 1114              	 .cfi_offset 7,-8
+ 1115              	 .cfi_offset 14,-4
+ 1116 0002 00AF     	 add r7,sp,#0
+ 1117              	.LCFI12:
+ 1118              	 .cfi_def_cfa_register 7
+ 236:../main.c     **** 	index_count_1++;
+ 1119              	 .loc 1 236 0
+ 1120 0004 194B     	 ldr r3,.L42
+ 1121 0006 1B78     	 ldrb r3,[r3]
+ 1122 0008 0133     	 adds r3,r3,#1
+ 1123 000a DAB2     	 uxtb r2,r3
+ 1124 000c 174B     	 ldr r3,.L42
+ 1125 000e 1A70     	 strb r2,[r3]
+ 237:../main.c     **** 	index_count_2++;
+ 1126              	 .loc 1 237 0
+ 1127 0010 174B     	 ldr r3,.L42+4
+ 1128 0012 1B78     	 ldrb r3,[r3]
+ 1129 0014 0133     	 adds r3,r3,#1
+ 1130 0016 DAB2     	 uxtb r2,r3
+ 1131 0018 154B     	 ldr r3,.L42+4
+ 1132 001a 1A70     	 strb r2,[r3]
+ 238:../main.c     **** 	index_count_3++;
+ 1133              	 .loc 1 238 0
+ 1134 001c 154B     	 ldr r3,.L42+8
+ 1135 001e 1B78     	 ldrb r3,[r3]
+ 1136 0020 0133     	 adds r3,r3,#1
+ 1137 0022 DAB2     	 uxtb r2,r3
+ 1138 0024 134B     	 ldr r3,.L42+8
+ 1139 0026 1A70     	 strb r2,[r3]
+ 239:../main.c     **** 
+ 240:../main.c     **** 	// bool status = PIN_INTERRUPT_STATUS(&PIN_INTERRUPT_0);
+ 241:../main.c     **** 	// if(taster1 == 1)
+ 242:../main.c     **** 	U_u = sin_table[index_count_1];
+ 1140              	 .loc 1 242 0
+ 1141 0028 104B     	 ldr r3,.L42
+ 1142 002a 1B78     	 ldrb r3,[r3]
+ 1143 002c 124A     	 ldr r2,.L42+12
+ 1144 002e DB00     	 lsls r3,r3,#3
+ 1145 0030 1344     	 add r3,r3,r2
+ 1146 0032 D3E90023 	 ldrd r2,[r3]
+ 1147 0036 1149     	 ldr r1,.L42+16
+ 1148 0038 C1E90023 	 strd r2,[r1]
+ 243:../main.c     **** 	U_v = sin_table[index_count_2]; // aufrunden oder abrunden ?
+ 1149              	 .loc 1 243 0
+ 1150 003c 0C4B     	 ldr r3,.L42+4
+ 1151 003e 1B78     	 ldrb r3,[r3]
+ 1152 0040 0D4A     	 ldr r2,.L42+12
+ 1153 0042 DB00     	 lsls r3,r3,#3
+ 1154 0044 1344     	 add r3,r3,r2
+ 1155 0046 D3E90023 	 ldrd r2,[r3]
+ 1156 004a 0D49     	 ldr r1,.L42+20
+ 1157 004c C1E90023 	 strd r2,[r1]
+ 244:../main.c     **** 	U_w = sin_table[index_count_3];
+ 1158              	 .loc 1 244 0
+ 1159 0050 084B     	 ldr r3,.L42+8
+ 1160 0052 1B78     	 ldrb r3,[r3]
+ 1161 0054 084A     	 ldr r2,.L42+12
+ 1162 0056 DB00     	 lsls r3,r3,#3
+ 1163 0058 1344     	 add r3,r3,r2
+ 1164 005a D3E90023 	 ldrd r2,[r3]
+ 1165 005e 0949     	 ldr r1,.L42+24
+ 1166 0060 C1E90023 	 strd r2,[r1]
+ 245:../main.c     **** 	// else {U_v = sin_table[index_count_1];
+ 246:../main.c     **** 	//U_u = sin_table[index_count_2]; // aufrunden oder abrunden ?
+ 247:../main.c     **** 	//U_w = sin_table[index_count_3];}
+ 248:../main.c     **** 	sinus_dreieck_vergleich();
+ 1167              	 .loc 1 248 0
+ 1168 0064 FFF7FEFF 	 bl sinus_dreieck_vergleich
+ 249:../main.c     **** }
+ 1169              	 .loc 1 249 0
+ 1170 0068 80BD     	 pop {r7,pc}
+ 1171              	.L43:
+ 1172 006a 00BF     	 .align 2
+ 1173              	.L42:
+ 1174 006c 00000000 	 .word index_count_1
+ 1175 0070 00000000 	 .word index_count_2
+ 1176 0074 00000000 	 .word index_count_3
+ 1177 0078 00000000 	 .word sin_table
+ 1178 007c 00000000 	 .word U_u
+ 1179 0080 00000000 	 .word U_v
+ 1180 0084 00000000 	 .word U_w
+ 1181              	 .cfi_endproc
+ 1182              	.LFE386:
+ 1184              	 .section .text.ERU0_3_IRQHandler,"ax",%progbits
+ 1185              	 .align 2
+ 1186              	 .global ERU0_3_IRQHandler
+ 1187              	 .thumb
+ 1188              	 .thumb_func
+ 1190              	ERU0_3_IRQHandler:
+ 1191              	.LFB387:
+ 250:../main.c     **** //bool current_status = false;
+ 251:../main.c     **** void start()
+ 252:../main.c     **** {
+ 1192              	 .loc 1 252 0
+ 1193              	 .cfi_startproc
+ 1194              	 
+ 1195              	 
+ 1196 0000 80B5     	 push {r7,lr}
+ 1197              	.LCFI13:
+ 1198              	 .cfi_def_cfa_offset 8
+ 1199              	 .cfi_offset 7,-8
+ 1200              	 .cfi_offset 14,-4
+ 1201 0002 00AF     	 add r7,sp,#0
+ 1202              	.LCFI14:
+ 1203              	 .cfi_def_cfa_register 7
+ 253:../main.c     **** 	 pin_status1=!pin_status1;
+ 1204              	 .loc 1 253 0
+ 1205 0004 254B     	 ldr r3,.L47
+ 1206 0006 1B78     	 ldrb r3,[r3]
+ 1207 0008 002B     	 cmp r3,#0
+ 1208 000a 14BF     	 ite ne
+ 1209 000c 0123     	 movne r3,#1
+ 1210 000e 0023     	 moveq r3,#0
+ 1211 0010 DBB2     	 uxtb r3,r3
+ 1212 0012 83F00103 	 eor r3,r3,#1
+ 1213 0016 DBB2     	 uxtb r3,r3
+ 1214 0018 03F00103 	 and r3,r3,#1
+ 1215 001c DAB2     	 uxtb r2,r3
+ 1216 001e 1F4B     	 ldr r3,.L47
+ 1217 0020 1A70     	 strb r2,[r3]
+ 254:../main.c     **** 	 // current_status = PIN_INTERRUPT_STATUS(&PIN_INTERRUPT_0);
+ 255:../main.c     **** 	 if(pin_status1)
+ 1218              	 .loc 1 255 0
+ 1219 0022 1E4B     	 ldr r3,.L47
+ 1220 0024 1B78     	 ldrb r3,[r3]
+ 1221 0026 002B     	 cmp r3,#0
+ 1222 0028 16D0     	 beq .L45
+ 256:../main.c     **** 	 {
+ 257:../main.c     **** 		 lcd_setcursor(0,2);
+ 1223              	 .loc 1 257 0
+ 1224 002a 0020     	 movs r0,#0
+ 1225 002c 0221     	 movs r1,#2
+ 1226 002e FFF7FEFF 	 bl lcd_setcursor
+ 258:../main.c     **** 		 lcd_string(str_cl);
+ 1227              	 .loc 1 258 0
+ 1228 0032 1B48     	 ldr r0,.L47+4
+ 1229 0034 FFF7FEFF 	 bl lcd_string
+ 259:../main.c     **** 		 TIMER_Start(&TIMER_0);
+ 1230              	 .loc 1 259 0
+ 1231 0038 1A48     	 ldr r0,.L47+8
+ 1232 003a FFF7FEFF 	 bl TIMER_Start
+ 260:../main.c     **** 		 TIMER_Start(&TIMER_1);
+ 1233              	 .loc 1 260 0
+ 1234 003e 1A48     	 ldr r0,.L47+12
+ 1235 0040 FFF7FEFF 	 bl TIMER_Start
+ 261:../main.c     **** 		 PWM_CCU8_Start(&PWM_CCU8_0);
+ 1236              	 .loc 1 261 0
+ 1237 0044 1948     	 ldr r0,.L47+16
+ 1238 0046 FFF7FEFF 	 bl PWM_CCU8_Start
+ 262:../main.c     **** 		 PWM_CCU8_Start(&PWM_CCU8_1);
+ 1239              	 .loc 1 262 0
+ 1240 004a 1948     	 ldr r0,.L47+20
+ 1241 004c FFF7FEFF 	 bl PWM_CCU8_Start
+ 263:../main.c     **** 		 PWM_CCU8_Start(&PWM_CCU8_2);
+ 1242              	 .loc 1 263 0
+ 1243 0050 1848     	 ldr r0,.L47+24
+ 1244 0052 FFF7FEFF 	 bl PWM_CCU8_Start
+ 1245 0056 1FE0     	 b .L44
+ 1246              	.L45:
+ 1247              	.LBB2:
+ 264:../main.c     **** 	 }
+ 265:../main.c     **** 	 else
+ 266:../main.c     **** 	 {
+ 267:../main.c     **** 	     lcd_setcursor(0,2);
+ 1248              	 .loc 1 267 0
+ 1249 0058 0020     	 movs r0,#0
+ 1250 005a 0221     	 movs r1,#2
+ 1251 005c FFF7FEFF 	 bl lcd_setcursor
+ 268:../main.c     **** 		 lcd_string(str_aus);
+ 1252              	 .loc 1 268 0
+ 1253 0060 1548     	 ldr r0,.L47+28
+ 1254 0062 FFF7FEFF 	 bl lcd_string
+ 269:../main.c     **** 		 PWM_CCU8_Stop(&PWM_CCU8_0);
+ 1255              	 .loc 1 269 0
+ 1256 0066 1148     	 ldr r0,.L47+16
+ 1257 0068 FFF7FEFF 	 bl PWM_CCU8_Stop
+ 270:../main.c     **** 		 PWM_CCU8_Stop(&PWM_CCU8_1);
+ 1258              	 .loc 1 270 0
+ 1259 006c 1048     	 ldr r0,.L47+20
+ 1260 006e FFF7FEFF 	 bl PWM_CCU8_Stop
+ 271:../main.c     **** 		 PWM_CCU8_Stop(&PWM_CCU8_2);
+ 1261              	 .loc 1 271 0
+ 1262 0072 1048     	 ldr r0,.L47+24
+ 1263 0074 FFF7FEFF 	 bl PWM_CCU8_Stop
+ 272:../main.c     **** 		 TIMER_Stop(&TIMER_1);
+ 1264              	 .loc 1 272 0
+ 1265 0078 0B48     	 ldr r0,.L47+12
+ 1266 007a FFF7FEFF 	 bl TIMER_Stop
+ 273:../main.c     **** 		 TIMER_Stop(&TIMER_0);
+ 1267              	 .loc 1 273 0
+ 1268 007e 0948     	 ldr r0,.L47+8
+ 1269 0080 FFF7FEFF 	 bl TIMER_Stop
+ 274:../main.c     **** 		 delay_ms(70000000);
+ 1270              	 .loc 1 274 0
+ 1271 0084 0D48     	 ldr r0,.L47+32
+ 1272 0086 FFF7FEFF 	 bl delay_ms
+ 275:../main.c     **** 		 f_aktuell = 0;
+ 1273              	 .loc 1 275 0
+ 1274 008a 0D49     	 ldr r1,.L47+36
+ 1275 008c 4FF00002 	 mov r2,#0
+ 1276 0090 4FF00003 	 mov r3,#0
+ 1277 0094 C1E90023 	 strd r2,[r1]
+ 1278              	.L44:
+ 1279              	.LBE2:
+ 276:../main.c     **** 	 }
+ 277:../main.c     **** 	 /* {
+ 278:../main.c     **** 		  PWM_CCU8_Start(&PWM_CCU8_0);
+ 279:../main.c     **** 		  PWM_CCU8_Start(&PWM_CCU8_1);
+ 280:../main.c     **** 		  PWM_CCU8_Start(&PWM_CCU8_2);
+ 281:../main.c     **** 	  	}*/
+ 282:../main.c     **** }
+ 1280              	 .loc 1 282 0
+ 1281 0098 80BD     	 pop {r7,pc}
+ 1282              	.L48:
+ 1283 009a 00BF     	 .align 2
+ 1284              	.L47:
+ 1285 009c 00000000 	 .word pin_status1
+ 1286 00a0 00000000 	 .word str_cl
+ 1287 00a4 00000000 	 .word TIMER_0
+ 1288 00a8 00000000 	 .word TIMER_1
+ 1289 00ac 00000000 	 .word PWM_CCU8_0
+ 1290 00b0 00000000 	 .word PWM_CCU8_1
+ 1291 00b4 00000000 	 .word PWM_CCU8_2
+ 1292 00b8 00000000 	 .word str_aus
+ 1293 00bc 801D2C04 	 .word 70000000
+ 1294 00c0 00000000 	 .word f_aktuell
+ 1295              	 .cfi_endproc
+ 1296              	.LFE387:
+ 1298              	 .section .text.ERU1_0_IRQHandler,"ax",%progbits
+ 1299              	 .align 2
+ 1300              	 .global ERU1_0_IRQHandler
+ 1301              	 .thumb
+ 1302              	 .thumb_func
+ 1304              	ERU1_0_IRQHandler:
+ 1305              	.LFB388:
+ 283:../main.c     **** 
+ 284:../main.c     **** void DC_Bremsen (void)
+ 285:../main.c     **** {
+ 1306              	 .loc 1 285 0
+ 1307              	 .cfi_startproc
+ 1308              	 
+ 1309              	 
+ 1310 0000 80B5     	 push {r7,lr}
+ 1311              	.LCFI15:
+ 1312              	 .cfi_def_cfa_offset 8
+ 1313              	 .cfi_offset 7,-8
+ 1314              	 .cfi_offset 14,-4
+ 1315 0002 00AF     	 add r7,sp,#0
+ 1316              	.LCFI16:
+ 1317              	 .cfi_def_cfa_register 7
+ 286:../main.c     **** 	pin_status2=!pin_status2;
+ 1318              	 .loc 1 286 0
+ 1319 0004 194B     	 ldr r3,.L52
+ 1320 0006 1B78     	 ldrb r3,[r3]
+ 1321 0008 002B     	 cmp r3,#0
+ 1322 000a 14BF     	 ite ne
+ 1323 000c 0123     	 movne r3,#1
+ 1324 000e 0023     	 moveq r3,#0
+ 1325 0010 DBB2     	 uxtb r3,r3
+ 1326 0012 83F00103 	 eor r3,r3,#1
+ 1327 0016 DBB2     	 uxtb r3,r3
+ 1328 0018 03F00103 	 and r3,r3,#1
+ 1329 001c DAB2     	 uxtb r2,r3
+ 1330 001e 134B     	 ldr r3,.L52
+ 1331 0020 1A70     	 strb r2,[r3]
+ 287:../main.c     **** 	TIMER_Stop(&TIMER_1);
+ 1332              	 .loc 1 287 0
+ 1333 0022 1348     	 ldr r0,.L52+4
+ 1334 0024 FFF7FEFF 	 bl TIMER_Stop
+ 288:../main.c     **** 	TIMER_Stop(&TIMER_0);
+ 1335              	 .loc 1 288 0
+ 1336 0028 1248     	 ldr r0,.L52+8
+ 1337 002a FFF7FEFF 	 bl TIMER_Stop
+ 289:../main.c     **** 	if(pin_status2)
+ 1338              	 .loc 1 289 0
+ 1339 002e 0F4B     	 ldr r3,.L52
+ 1340 0030 1B78     	 ldrb r3,[r3]
+ 1341 0032 002B     	 cmp r3,#0
+ 1342 0034 0CD0     	 beq .L50
+ 1343              	.LBB3:
+ 290:../main.c     **** 	{
+ 291:../main.c     **** 		sinus_dreieck_vergleich();
+ 1344              	 .loc 1 291 0
+ 1345 0036 FFF7FEFF 	 bl sinus_dreieck_vergleich
+ 292:../main.c     **** 		lcd_setcursor(0,2);
+ 1346              	 .loc 1 292 0
+ 1347 003a 0020     	 movs r0,#0
+ 1348 003c 0221     	 movs r1,#2
+ 1349 003e FFF7FEFF 	 bl lcd_setcursor
+ 293:../main.c     **** 		lcd_string(str_dc);
+ 1350              	 .loc 1 293 0
+ 1351 0042 0D48     	 ldr r0,.L52+12
+ 1352 0044 FFF7FEFF 	 bl lcd_string
+ 294:../main.c     **** 		delay_ms(50000000);
+ 1353              	 .loc 1 294 0
+ 1354 0048 0C48     	 ldr r0,.L52+16
+ 1355 004a FFF7FEFF 	 bl delay_ms
+ 1356              	.LBE3:
+ 1357 004e 0CE0     	 b .L49
+ 1358              	.L50:
+ 295:../main.c     **** 	}
+ 296:../main.c     **** 	else
+ 297:../main.c     **** 	{
+ 298:../main.c     **** 		lcd_setcursor(0,2);
+ 1359              	 .loc 1 298 0
+ 1360 0050 0020     	 movs r0,#0
+ 1361 0052 0221     	 movs r1,#2
+ 1362 0054 FFF7FEFF 	 bl lcd_setcursor
+ 299:../main.c     **** 		lcd_string(str_cl);
+ 1363              	 .loc 1 299 0
+ 1364 0058 0948     	 ldr r0,.L52+20
+ 1365 005a FFF7FEFF 	 bl lcd_string
+ 300:../main.c     **** 		TIMER_Start(&TIMER_0);
+ 1366              	 .loc 1 300 0
+ 1367 005e 0548     	 ldr r0,.L52+8
+ 1368 0060 FFF7FEFF 	 bl TIMER_Start
+ 301:../main.c     **** 		TIMER_Start(&TIMER_1);
+ 1369              	 .loc 1 301 0
+ 1370 0064 0248     	 ldr r0,.L52+4
+ 1371 0066 FFF7FEFF 	 bl TIMER_Start
+ 1372              	.L49:
+ 302:../main.c     **** 	}
+ 303:../main.c     **** }
+ 1373              	 .loc 1 303 0
+ 1374 006a 80BD     	 pop {r7,pc}
+ 1375              	.L53:
+ 1376              	 .align 2
+ 1377              	.L52:
+ 1378 006c 00000000 	 .word pin_status2
+ 1379 0070 00000000 	 .word TIMER_1
+ 1380 0074 00000000 	 .word TIMER_0
+ 1381 0078 00000000 	 .word str_dc
+ 1382 007c 80F0FA02 	 .word 50000000
+ 1383 0080 00000000 	 .word str_cl
+ 1384              	 .cfi_endproc
+ 1385              	.LFE388:
+ 1387              	 .section .text.ERU1_3_IRQHandler,"ax",%progbits
+ 1388              	 .align 2
+ 1389              	 .global ERU1_3_IRQHandler
+ 1390              	 .thumb
+ 1391              	 .thumb_func
+ 1393              	ERU1_3_IRQHandler:
+ 1394              	.LFB389:
+ 304:../main.c     **** 
+ 305:../main.c     **** void PWM_Drehrichtung()
+ 306:../main.c     **** {
+ 1395              	 .loc 1 306 0
+ 1396              	 .cfi_startproc
+ 1397              	 
+ 1398              	 
+ 1399 0000 80B5     	 push {r7,lr}
+ 1400              	.LCFI17:
+ 1401              	 .cfi_def_cfa_offset 8
+ 1402              	 .cfi_offset 7,-8
+ 1403              	 .cfi_offset 14,-4
+ 1404 0002 00AF     	 add r7,sp,#0
+ 1405              	.LCFI18:
+ 1406              	 .cfi_def_cfa_register 7
+ 307:../main.c     **** 	pin_status_bremsen =!pin_status_bremsen;
+ 1407              	 .loc 1 307 0
+ 1408 0004 0B4B     	 ldr r3,.L55
+ 1409 0006 1B78     	 ldrb r3,[r3]
+ 1410 0008 002B     	 cmp r3,#0
+ 1411 000a 14BF     	 ite ne
+ 1412 000c 0123     	 movne r3,#1
+ 1413 000e 0023     	 moveq r3,#0
+ 1414 0010 DBB2     	 uxtb r3,r3
+ 1415 0012 83F00103 	 eor r3,r3,#1
+ 1416 0016 DBB2     	 uxtb r3,r3
+ 1417 0018 03F00103 	 and r3,r3,#1
+ 1418 001c DAB2     	 uxtb r2,r3
+ 1419 001e 054B     	 ldr r3,.L55
+ 1420 0020 1A70     	 strb r2,[r3]
+ 308:../main.c     **** 	lcd_setcursor(0,2);
+ 1421              	 .loc 1 308 0
+ 1422 0022 0020     	 movs r0,#0
+ 1423 0024 0221     	 movs r1,#2
+ 1424 0026 FFF7FEFF 	 bl lcd_setcursor
+ 309:../main.c     **** 	lcd_string(str_wechsel);
+ 1425              	 .loc 1 309 0
+ 1426 002a 0348     	 ldr r0,.L55+4
+ 1427 002c FFF7FEFF 	 bl lcd_string
+ 310:../main.c     **** }
+ 1428              	 .loc 1 310 0
+ 1429 0030 80BD     	 pop {r7,pc}
+ 1430              	.L56:
+ 1431 0032 00BF     	 .align 2
+ 1432              	.L55:
+ 1433 0034 00000000 	 .word pin_status_bremsen
+ 1434 0038 00000000 	 .word str_wechsel
+ 1435              	 .cfi_endproc
+ 1436              	.LFE389:
+ 1438              	 .section .text.main,"ax",%progbits
+ 1439              	 .align 2
+ 1440              	 .global main
+ 1441              	 .thumb
+ 1442              	 .thumb_func
+ 1444              	main:
+ 1445              	.LFB390:
+ 311:../main.c     **** 
+ 312:../main.c     **** 
+ 313:../main.c     **** int main(void)
+ 314:../main.c     **** {
+ 1446              	 .loc 1 314 0
+ 1447              	 .cfi_startproc
+ 1448              	 
+ 1449              	 
+ 1450 0000 80B5     	 push {r7,lr}
+ 1451              	.LCFI19:
+ 1452              	 .cfi_def_cfa_offset 8
+ 1453              	 .cfi_offset 7,-8
+ 1454              	 .cfi_offset 14,-4
+ 1455 0002 82B0     	 sub sp,sp,#8
+ 1456              	.LCFI20:
+ 1457              	 .cfi_def_cfa_offset 16
+ 1458 0004 00AF     	 add r7,sp,#0
+ 1459              	.LCFI21:
+ 1460              	 .cfi_def_cfa_register 7
+ 1461              	.LBB4:
+ 315:../main.c     **** 	// create values for sin_table
+ 316:../main.c     **** 	for (int i = 0; i<=255; i++)
+ 1462              	 .loc 1 316 0
+ 1463 0006 0023     	 movs r3,#0
+ 1464 0008 7B60     	 str r3,[r7,#4]
+ 1465 000a 1CE0     	 b .L58
+ 1466              	.L59:
+ 317:../main.c     **** 	  {
+ 318:../main.c     **** 	    sin_table[i] = sin(2*M_PI/255 * i);
+ 1467              	 .loc 1 318 0 discriminator 3
+ 1468 000c 7868     	 ldr r0,[r7,#4]
+ 1469 000e FFF7FEFF 	 bl __aeabi_i2d
+ 1470 0012 0246     	 mov r2,r0
+ 1471 0014 0B46     	 mov r3,r1
+ 1472 0016 1046     	 mov r0,r2
+ 1473 0018 1946     	 mov r1,r3
+ 1474 001a 17A3     	 adr r3,.L63+8
+ 1475 001c D3E90023 	 ldrd r2,[r3]
+ 1476 0020 FFF7FEFF 	 bl __aeabi_dmul
+ 1477 0024 0246     	 mov r2,r0
+ 1478 0026 0B46     	 mov r3,r1
+ 1479 0028 1046     	 mov r0,r2
+ 1480 002a 1946     	 mov r1,r3
+ 1481 002c FFF7FEFF 	 bl sin
+ 1482 0030 0246     	 mov r2,r0
+ 1483 0032 0B46     	 mov r3,r1
+ 1484 0034 0E48     	 ldr r0,.L63
+ 1485 0036 7968     	 ldr r1,[r7,#4]
+ 1486 0038 C900     	 lsls r1,r1,#3
+ 1487 003a 0144     	 add r1,r1,r0
+ 1488 003c C1E90023 	 strd r2,[r1]
+ 316:../main.c     **** 	  {
+ 1489              	 .loc 1 316 0 discriminator 3
+ 1490 0040 7B68     	 ldr r3,[r7,#4]
+ 1491 0042 0133     	 adds r3,r3,#1
+ 1492 0044 7B60     	 str r3,[r7,#4]
+ 1493              	.L58:
+ 316:../main.c     **** 	  {
+ 1494              	 .loc 1 316 0 is_stmt 0 discriminator 1
+ 1495 0046 7B68     	 ldr r3,[r7,#4]
+ 1496 0048 FF2B     	 cmp r3,#255
+ 1497 004a DFDD     	 ble .L59
+ 1498              	.LBE4:
+ 319:../main.c     **** 	  }
+ 320:../main.c     ****   DAVE_STATUS_t status;
+ 321:../main.c     **** 
+ 322:../main.c     ****   status = DAVE_Init();           /* Initialization of DAVE APPs  */
+ 1499              	 .loc 1 322 0 is_stmt 1
+ 1500 004c FFF7FEFF 	 bl DAVE_Init
+ 1501 0050 0346     	 mov r3,r0
+ 1502 0052 FB70     	 strb r3,[r7,#3]
+ 323:../main.c     **** 
+ 324:../main.c     ****   if (status != DAVE_STATUS_SUCCESS)
+ 1503              	 .loc 1 324 0
+ 1504 0054 FB78     	 ldrb r3,[r7,#3]
+ 1505 0056 002B     	 cmp r3,#0
+ 1506 0058 00D0     	 beq .L60
+ 1507              	.L61:
+ 325:../main.c     ****   {
+ 326:../main.c     ****     /* Placeholder for error handler code. The while loop below can be replaced with an user error 
+ 327:../main.c     ****     XMC_DEBUG("DAVE APPs initialization failed\n");
+ 328:../main.c     **** 
+ 329:../main.c     ****     while(1U)
+ 330:../main.c     ****     {
+ 331:../main.c     **** 
+ 332:../main.c     ****     }
+ 1508              	 .loc 1 332 0 discriminator 1
+ 1509 005a FEE7     	 b .L61
+ 1510              	.L60:
+ 333:../main.c     ****   }
+ 334:../main.c     ****   //bool status_Brems_ADC;
+ 335:../main.c     ****  // status_Brems_ADC = PWM_CCU4_GetInterruptStatus(&PWM_CCU4_0,XMC_CCU4_SLICE_IRQ_ID_PERIOD_MATCH);
+ 336:../main.c     **** 
+ 337:../main.c     **** 
+ 338:../main.c     ****   /* Placeholder for user application code. The while loop below can be replaced with user applicat
+ 339:../main.c     ****   //led_freq = 20;
+ 340:../main.c     ****   //CLOCK_XMC4_Init();
+ 341:../main.c     **** 
+ 342:../main.c     ****   //time = PWM_CCU4_GetTimerValue(&PWM_CCU4_0);
+ 343:../main.c     **** 	 // PWM_SetFreq(&PWM_0,led_freq);
+ 344:../main.c     **** 
+ 345:../main.c     ****   lcd_init(); // erste haupt initialisierung
+ 1511              	 .loc 1 345 0
+ 1512 005c FFF7FEFF 	 bl lcd_init
+ 346:../main.c     ****   lcd_clear();
+ 1513              	 .loc 1 346 0
+ 1514 0060 FFF7FEFF 	 bl lcd_clear
+ 347:../main.c     **** 
+ 348:../main.c     ****   //TIMER_Start(&TIMER_0);
+ 349:../main.c     **** 
+ 350:../main.c     ****   //time = PWM_CCU4_GetTimerValue(&PWM_CCU4_0);
+ 351:../main.c     ****   //while(1U)
+ 352:../main.c     ****   // {
+ 353:../main.c     **** 	//  result = ADC_MEASUREMENT_GetResult(&ADC_MEASUREMENT_Channel_A);
+ 354:../main.c     ****   // }
+ 355:../main.c     ****   // Calculate components
+ 356:../main.c     **** 
+ 357:../main.c     ****   //double U_1 = 70;
+ 358:../main.c     ****   // ab 20 hz R = 0?
+ 359:../main.c     **** 
+ 360:../main.c     **** 
+ 361:../main.c     ****   ADC_MEASUREMENT_StartConversion(&ADC_MEASUREMENT_0);
+ 1515              	 .loc 1 361 0
+ 1516 0064 0348     	 ldr r0,.L63+4
+ 1517 0066 FFF7FEFF 	 bl ADC_MEASUREMENT_StartConversion
+ 1518              	.L62:
+ 362:../main.c     **** 
+ 363:../main.c     ****   //double f_1 = sqrt((U_1*f_N/U_N)*(U_1*f_N/U_N)); // R abouve 20Hz is 0  - (R_1*f_N)/X_1
+ 364:../main.c     ****  // double f_2 = sqrt((U_1*f_N/U_N)*(U_1*f_N/U_N)- (R_1*f_N)/X_1); // R abouve 20Hz is 0  - (R_1*f_
+ 365:../main.c     **** 
+ 366:../main.c     ****   //DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_1); // test led
+ 367:../main.c     ****  // PWM_Start(&PWM_0);
+ 368:../main.c     ****   while(1U)
+ 369:../main.c     ****   {
+ 370:../main.c     **** 
+ 371:../main.c     **** 	  	  //timer 1 (ccu4) for checking ADC changes every 100ms, interrupt ?
+ 372:../main.c     **** 	  	  //
+ 373:../main.c     **** 
+ 374:../main.c     **** 	     // DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_1); // test led
+ 375:../main.c     **** 		  //lcd_clear();
+ 376:../main.c     **** 		  //result = ADC_MEASUREMENT_GetResult(&ADC_MEASUREMENT_Channel_A);
+ 377:../main.c     **** 		  //lcd_home(); // cursor in die 1. Zeile
+ 378:../main.c     **** 		  //const char str1[] = "Hello World!";
+ 379:../main.c     **** 		  //lcd_string(str1);
+ 380:../main.c     **** 		  //snprintf(str, sizeof str, "%lu", (unsigned long)n); /* Method 1 */
+ 381:../main.c     **** 		 //DIGITAL_IO_SetOutputLow(&DIGITAL_IO_0);
+ 382:../main.c     **** 		  //delay_ms(50000000);
+ 383:../main.c     **** 		  //char result[];
+ 384:../main.c     **** 		  //ADC_MEASUREMENT_StartConversion(&ADC_MEASUREMENT_0);
+ 385:../main.c     **** 
+ 386:../main.c     **** 		  //Adc_Measurement_Handler();
+ 387:../main.c     **** 		  //time = PWM_CCU4_GetTimerValue(&PWM_CCU4_0);
+ 388:../main.c     **** 	  	  write_display();
+ 1519              	 .loc 1 388 0 discriminator 1
+ 1520 006a FFF7FEFF 	 bl write_display
+ 389:../main.c     **** 
+ 390:../main.c     **** 		  /*status_Brems_ADC = PWM_CCU4_GetInterruptStatus(&PWM_CCU4_0,XMC_CCU4_SLICE_IRQ_ID_PERIOD_MATCH
+ 391:../main.c     **** 		  if (status_Brems_ADC == true)
+ 392:../main.c     **** 		  {
+ 393:../main.c     **** 			  //delay_ms(50000000);
+ 394:../main.c     **** 			  //PWM_Stop(&PWM_0);
+ 395:../main.c     **** 			  //DIGITAL_IO_SetOutputLow(&DIGITAL_IO_1);
+ 396:../main.c     **** 			  PWM_CCU4_ClearTrap(&PWM_CCU4_0); // setzt Brems und ADC status als gecheckt und lässt neue 10
+ 397:../main.c     **** 
+ 398:../main.c     **** 			  ADC_MEASUREMENT_StartConversion(&ADC_MEASUREMENT_0); // schaue nach was adc ausgibt
+ 399:../main.c     **** 			  Adc_Measurement_Handler(); // rufe handler für display auf der display refreshed
+ 400:../main.c     **** 			  //DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_1);
+ 401:../main.c     **** 			  //PWM_Start(&PWM_0);
+ 402:../main.c     **** 		  }
+ 403:../main.c     **** 	  	  */
+ 404:../main.c     **** 		  /*x = 11;
+ 405:../main.c     **** 		  y = 2;
+ 406:../main.c     **** 
+ 407:../main.c     **** 		  char str2[] = "  ";
+ 408:../main.c     **** 		  snprintf(str2, sizeof str2, "%lu", (unsigned long)result); // Method 1
+ 409:../main.c     **** 		  lcd_setcursor(x,y);
+ 410:../main.c     **** 		  lcd_string(result);
+ 411:../main.c     **** 		  lcd_clear();
+ 412:../main.c     **** 		  */
+ 413:../main.c     **** 		  //DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_0);
+ 414:../main.c     **** 
+ 415:../main.c     **** 	  /*
+ 416:../main.c     **** 
+ 417:../main.c     **** 	   if()
+ 418:../main.c     **** 	   {
+ 419:../main.c     **** 	   	   f_1 = 0;
+ 420:../main.c     **** 	   	   i
+ 421:../main.c     **** 	   }
+ 422:../main.c     **** 	   */
+ 423:../main.c     **** 
+ 424:../main.c     ****   }
+ 1521              	 .loc 1 424 0 discriminator 1
+ 1522 006e FCE7     	 b .L62
+ 1523              	.L64:
+ 1524              	 .align 3
+ 1525              	.L63:
+ 1526 0070 00000000 	 .word sin_table
+ 1527 0074 00000000 	 .word ADC_MEASUREMENT_0
+ 1528 0078 14FCCE8A 	 .word -1966146540
+ 1529 007c 363B993F 	 .word 1067006774
+ 1530              	 .cfi_endproc
+ 1531              	.LFE390:
+ 1533              	 .text
+ 1534              	.Letext0:
+ 1535              	 .file 2 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1536              	 .file 3 "d:\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 1537              	 .file 4 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/XMC4500.h"
+ 1538              	 .file 5 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_scu.h"
+ 1539              	 .file 6 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_gpio.h"
+ 1540              	 .file 7 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc4_gpio.h"
+ 1541              	 .file 8 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_vadc.h"
+ 1542              	 .file 9 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_ADC/global_adc.h"
+ 1543              	 .file 10 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/ADC_MEASUREMENT/adc_measurement.h"
+ 1544              	 .file 11 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_ccu4.h"
+ 1545              	 .file 12 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU4/global_ccu4.h"
+ 1546              	 .file 13 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/TIMER/timer.h"
+ 1547              	 .file 14 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/XMCLib/inc/xmc_ccu8.h"
+ 1548              	 .file 15 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/GLOBAL_CCU8/global_ccu8.h"
+ 1549              	 .file 16 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/PWM_CCU8/pwm_ccu8.h"
+ 1550              	 .file 17 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/DAVE.h"
+ 1551              	 .file 18 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/cmsis_gcc.h"
+ 1552              	 .file 19 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Include/core_cm4.h"
+ 1553              	 .file 20 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Libraries/CMSIS/Infineon/XMC4500_series/Include/system_XMC4500.h"
+ 1554              	 .file 21 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/ADC_MEASUREMENT/adc_measurement_extern.h"
+ 1555              	 .file 22 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/TIMER/timer_extern.h"
+ 1556              	 .file 23 "D:/4.5.0.202105191637/eclipse/workspace/PWM_display/Dave/Generated/PWM_CCU8/pwm_ccu8_extern.h"
+ 1557              	 .file 24 "<built-in>"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+                            *COM*:00000800 sin_table
+                            *COM*:00000008 U_1
+                            *COM*:00000008 f_1
+                            *COM*:00000008 f_diff
+                            *COM*:00000002 led_freq
+    {standard input}:28     .bss.x:00000000 x
+    {standard input}:29     .bss.x:00000000 $d
+    {standard input}:34     .data.y:00000000 y
+                            *COM*:00000004 time
+                            *COM*:00000008 time_sample
+                            *COM*:00000002 result
+                            *COM*:00000008 U_u
+                            *COM*:00000008 U_v
+                            *COM*:00000008 U_w
+    {standard input}:47     .data.str_dc:00000000 str_dc
+    {standard input}:44     .data.str_dc:00000000 $d
+    {standard input}:54     .data.str_cl:00000000 str_cl
+    {standard input}:51     .data.str_cl:00000000 $d
+    {standard input}:61     .data.str_aus:00000000 str_aus
+    {standard input}:58     .data.str_aus:00000000 $d
+    {standard input}:68     .data.str_wechsel:00000000 str_wechsel
+    {standard input}:65     .data.str_wechsel:00000000 $d
+    {standard input}:75     .data.str_dreh:00000000 str_dreh
+    {standard input}:72     .data.str_dreh:00000000 $d
+    {standard input}:82     .data.str_p:00000000 str_p
+    {standard input}:79     .data.str_p:00000000 $d
+    {standard input}:89     .data.str_m:00000000 str_m
+    {standard input}:86     .data.str_m:00000000 $d
+    {standard input}:95     .bss.index_count_1:00000000 index_count_1
+    {standard input}:96     .bss.index_count_1:00000000 $d
+    {standard input}:101    .data.index_count_2:00000000 index_count_2
+    {standard input}:107    .data.index_count_3:00000000 index_count_3
+    {standard input}:114    .bss.f_aktuell:00000000 f_aktuell
+    {standard input}:111    .bss.f_aktuell:00000000 $d
+    {standard input}:121    .data.U_N:00000000 U_N
+    {standard input}:118    .data.U_N:00000000 $d
+    {standard input}:129    .data.f_N:00000000 f_N
+    {standard input}:126    .data.f_N:00000000 $d
+                            *COM*:00000006 str2
+    {standard input}:138    .data.str4:00000000 str4
+    {standard input}:135    .data.str4:00000000 $d
+                            *COM*:00000005 str5
+    {standard input}:147    .data.str6:00000000 str6
+    {standard input}:144    .data.str6:00000000 $d
+                            *COM*:00000005 str7
+    {standard input}:154    .bss.pin_status1:00000000 pin_status1
+    {standard input}:155    .bss.pin_status1:00000000 $d
+    {standard input}:160    .bss.pin_status2:00000000 pin_status2
+    {standard input}:161    .bss.pin_status2:00000000 $d
+    {standard input}:167    .data.d:00000000 d
+    {standard input}:164    .data.d:00000000 $d
+    {standard input}:174    .data.f:00000000 f
+    {standard input}:171    .data.f:00000000 $d
+    {standard input}:181    .data.d1:00000000 d1
+    {standard input}:178    .data.d1:00000000 $d
+    {standard input}:188    .data.d2:00000000 d2
+    {standard input}:185    .data.d2:00000000 $d
+    {standard input}:195    .data.d3:00000000 d3
+    {standard input}:192    .data.d3:00000000 $d
+    {standard input}:202    .data.d2_DC:00000000 d2_DC
+    {standard input}:199    .data.d2_DC:00000000 $d
+    {standard input}:209    .data.d3_DC:00000000 d3_DC
+    {standard input}:206    .data.d3_DC:00000000 $d
+    {standard input}:215    .bss.pin_status_bremsen:00000000 pin_status_bremsen
+    {standard input}:216    .bss.pin_status_bremsen:00000000 $d
+    {standard input}:221    .bss.current_index_status:00000000 current_index_status
+    {standard input}:222    .bss.current_index_status:00000000 $d
+    {standard input}:224    .rodata:00000000 $d
+    {standard input}:228    .text.write_display:00000000 $t
+    {standard input}:233    .text.write_display:00000000 write_display
+    {standard input}:374    .text.write_display:000000f4 $d
+    {standard input}:401    .text.change_frequency:00000000 $t
+    {standard input}:406    .text.change_frequency:00000000 change_frequency
+    {standard input}:723    .text.change_frequency:000002a8 $d
+    {standard input}:751    .text.VADC0_C0_2_IRQHandler:00000000 $t
+    {standard input}:756    .text.VADC0_C0_2_IRQHandler:00000000 VADC0_C0_2_IRQHandler
+    {standard input}:831    .text.VADC0_C0_2_IRQHandler:0000007c $d
+    {standard input}:846    .bss.p1:00000000 p1
+    {standard input}:843    .bss.p1:00000000 $d
+    {standard input}:853    .bss.p2:00000000 p2
+    {standard input}:850    .bss.p2:00000000 $d
+    {standard input}:860    .bss.p3:00000000 p3
+    {standard input}:857    .bss.p3:00000000 $d
+    {standard input}:863    .text.sinus_dreieck_vergleich:00000000 $t
+    {standard input}:868    .text.sinus_dreieck_vergleich:00000000 sinus_dreieck_vergleich
+    {standard input}:1077   .text.sinus_dreieck_vergleich:000001d8 $d
+    {standard input}:1100   .text.CCU43_1_IRQHandler:00000000 $t
+    {standard input}:1105   .text.CCU43_1_IRQHandler:00000000 CCU43_1_IRQHandler
+    {standard input}:1174   .text.CCU43_1_IRQHandler:0000006c $d
+    {standard input}:1185   .text.ERU0_3_IRQHandler:00000000 $t
+    {standard input}:1190   .text.ERU0_3_IRQHandler:00000000 ERU0_3_IRQHandler
+    {standard input}:1285   .text.ERU0_3_IRQHandler:0000009c $d
+    {standard input}:1299   .text.ERU1_0_IRQHandler:00000000 $t
+    {standard input}:1304   .text.ERU1_0_IRQHandler:00000000 ERU1_0_IRQHandler
+    {standard input}:1378   .text.ERU1_0_IRQHandler:0000006c $d
+    {standard input}:1388   .text.ERU1_3_IRQHandler:00000000 $t
+    {standard input}:1393   .text.ERU1_3_IRQHandler:00000000 ERU1_3_IRQHandler
+    {standard input}:1433   .text.ERU1_3_IRQHandler:00000034 $d
+    {standard input}:1439   .text.main:00000000 $t
+    {standard input}:1444   .text.main:00000000 main
+    {standard input}:1526   .text.main:00000070 $d
+                     .debug_frame:00000010 $d
+    {standard input}:750    .text.change_frequency:00000304 $t
+    {standard input}:1099   .text.sinus_dreieck_vergleich:00000224 $t
+
+UNDEFINED SYMBOLS
+snprintf
+strcat
+lcd_home
+lcd_string
+__aeabi_dsub
+__aeabi_dcmpge
+__aeabi_dcmple
+__aeabi_ddiv
+__aeabi_dmul
+__aeabi_dcmpgt
+__aeabi_dadd
+__aeabi_d2uiz
+__aeabi_dcmpeq
+__aeabi_dcmplt
+TIMER_Stop
+TIMER_SetTimeInterval
+TIMER_Start
+TIMER_1
+__aeabi_i2d
+ADC_MEASUREMENT_GetResult
+ADC_MEASUREMENT_Channel_A_handle
+PWM_CCU8_SetDutyCycleSymmetric
+PWM_CCU8_SetFreqAndDutyCycleSymmetric
+PWM_CCU8_0
+PWM_CCU8_1
+PWM_CCU8_2
+lcd_setcursor
+PWM_CCU8_Start
+PWM_CCU8_Stop
+delay_ms
+TIMER_0
+sin
+DAVE_Init
+lcd_init
+lcd_clear
+ADC_MEASUREMENT_StartConversion
+ADC_MEASUREMENT_0
